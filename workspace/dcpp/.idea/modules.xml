@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dcpp.iml" filepath="$PROJECT_DIR$/dcpp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dcpp-console/dcpp-console.iml" filepath="$PROJECT_DIR$/dcpp-console/dcpp-console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dcpp-portal/dcpp-portal.iml" filepath="$PROJECT_DIR$/dcpp-portal/dcpp-portal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hbase-common/hbase-common.iml" filepath="$PROJECT_DIR$/hbase-common/hbase-common.iml" />
+    </modules>
+  </component>
+</project>

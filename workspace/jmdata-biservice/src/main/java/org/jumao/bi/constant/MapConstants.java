@@ -1,0 +1,55 @@
+package org.jumao.bi.constant;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MapConstants {
+
+    public static final Map<String, Long>   CHINA_MAP      = new HashMap<String, Long>();
+    static {
+        CHINA_MAP.put("北京", 0L);
+        CHINA_MAP.put("天津", 0L);
+        CHINA_MAP.put("上海", 0L);
+        CHINA_MAP.put("重庆", 0L);
+        CHINA_MAP.put("河北", 0L);
+        CHINA_MAP.put("河南", 0L);
+        CHINA_MAP.put("云南", 0L);
+        CHINA_MAP.put("辽宁", 0L);
+        CHINA_MAP.put("湖南", 0L);
+        CHINA_MAP.put("安徽", 0L);
+        CHINA_MAP.put("山东", 0L);
+        CHINA_MAP.put("新疆", 0L);
+        CHINA_MAP.put("浙江", 0L);
+        CHINA_MAP.put("江西", 0L);
+        CHINA_MAP.put("湖北", 0L);
+        CHINA_MAP.put("广西", 0L);
+        CHINA_MAP.put("甘肃", 0L);
+        CHINA_MAP.put("山西", 0L);
+        CHINA_MAP.put("内蒙古", 0L);
+        CHINA_MAP.put("陕西", 0L);
+        CHINA_MAP.put("吉林", 0L);
+        CHINA_MAP.put("福建", 0L);
+        CHINA_MAP.put("贵州", 0L);
+        CHINA_MAP.put("广东", 0L);
+        CHINA_MAP.put("青海", 0L);
+        CHINA_MAP.put("西藏", 0L);
+        CHINA_MAP.put("四川", 0L);
+        CHINA_MAP.put("宁夏", 0L);
+        CHINA_MAP.put("海南", 0L);
+        CHINA_MAP.put("台湾", 0L);
+        CHINA_MAP.put("香港", 0L);
+        CHINA_MAP.put("澳门", 0L);
+        CHINA_MAP.put("黑龙江", 0L);
+        CHINA_MAP.put("江苏", 0L);
+        CHINA_MAP.put("南海诸岛", 0L);
+    }
+
+    public static final Map<String, String> STAR_LEVEL_MAP = new HashMap<String, String>();
+    static {
+        STAR_LEVEL_MAP.put("441", "一星");
+        STAR_LEVEL_MAP.put("442", "二星");
+        STAR_LEVEL_MAP.put("443", "三星");
+        STAR_LEVEL_MAP.put("444", "四星");
+        STAR_LEVEL_MAP.put("445", "五星");
+    }
+}

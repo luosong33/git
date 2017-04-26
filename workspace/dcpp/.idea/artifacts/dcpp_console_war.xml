@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="dcpp-console:war">
+    <output-path>$PROJECT_DIR$/dcpp-console/target</output-path>
+    <root id="archive" name="dcpp-console.war">
+      <element id="artifact" artifact-name="dcpp-console:war exploded" />
+    </root>
+  </artifact>
+</component>

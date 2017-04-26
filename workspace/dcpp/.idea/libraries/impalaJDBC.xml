@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="impalaJDBC">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/hive_metastore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/hive_service.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/ImpalaJDBC41.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/libfb303-0.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/libthrift-0.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/log4j-1.2.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/ql.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/slf4j-api-1.5.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/slf4j-log4j12-1.5.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/TCLIServiceClient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/zookeeper-3.4.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/dcpp-console/lib/libthrift-0.9.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>

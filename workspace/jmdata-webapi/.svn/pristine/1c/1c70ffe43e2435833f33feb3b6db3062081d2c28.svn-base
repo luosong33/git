@@ -1,0 +1,43 @@
+appName=jmdata-webapi
+
+enableSOA=false
+soa.appname=jmdata-webapi
+soa.registry=zookeeper://192.168.1.51:2181?backup=192.168.1.50:2182,192.168.1.52:2181
+soa.localport=20880
+
+cache.enable=false
+redisNodes=192.168.1.51:7001,192.168.1.51:7002,192.168.1.51:7003,192.168.1.51:7004,192.168.1.51:7005,192.168.1.51:7006
+
+
+shiro.session.timeout=1800
+
+enableMQ=false
+rabbitServers=192.168.1.51:5672,192.168.1.52:5672
+mqUsername=admin
+mqPassword=123456
+
+enableSearch=true
+searchServers=192.168.1.50:9300,192.168.1.52:9300
+esClusterName=es-local
+esIndex=jdata_company
+
+enableJob=false
+elastic.job.registry=192.168.1.50:2181,192.168.1.51:2181,192.168.1.52:2181
+
+#ftp image server
+web.image.path=http://image5.jm.com
+
+# ftp image server for view
+web.image.view.path=http://image.jm.com
+ 
+##logbak
+logbak.flume.agent=192.168.1.51:44444,192.168.1.52:44444
+##logback debug,info,warn,error
+logback.level=debug
+##logback dev test prev prod
+logback.env=dev
+
+casLoginUrlPrefix=http://uc3.dev.com
+sso.loginUrl=${casLoginUrlPrefix}/getCasToken?returnUrl=${sys.domain.url}/sso/loginByToken?loginUrl=${sys.domain.url}/user/loginInit
+static.domain.url=http://localhost:8080
+
