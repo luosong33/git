@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ import java.util.Map;
  */
 public class OperationSvcImpl implements IOperationSvc {
 
-    //    ImpalaJDBC impalaJDBC = new ImpalaJDBC();
+//    ImpalaJDBC impalaJDBC = new ImpalaJDBC();
     @Autowired
     private IOperationOverviewDao operationOverviewDao;
 
@@ -32,7 +30,7 @@ public class OperationSvcImpl implements IOperationSvc {
         map.put("OrderTotal",getOrderTotal());
         map.put("PayTotal",getPayTotal());
         map.put("TranTotal",getTranTotal());*/
-        String SQL = "select count(*) from jmbi_uc_jumore_user\n" +
+        String SQL ="select count(*) from jmbi_uc_jumore_user\n" +
                 "union all\n" +
                 "SELECT COUNT(*) FROM jmbi_trade_shop_operate WHERE operate_type=0\n" +
                 "union all\n" +
@@ -44,33 +42,7 @@ public class OperationSvcImpl implements IOperationSvc {
                 "union all\n" +
                 "select sum(pay_amt) from jmbi_ep_trade  where status in (2,3,4)";
         List<Map<String, Object>> topTotal = operationOverviewDao.getTopTotal(SQL);
-        List<Map<String, Object>> topTotal_ = new ArrayList();
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("MemberTotal", topTotal.get(0).get("count(*)"));
-        topTotal_.add(map);
-
-        Map<String, Object> map1 = new HashMap<String, Object>();
-        map1.put("OpenStoreTotal", topTotal.get(1).get("count(*)"));
-        topTotal_.add(map1);
-
-        Map<String, Object> map2 = new HashMap<String, Object>();
-        map2.put("ItemTotal", topTotal.get(2).get("count(*)"));
-        topTotal_.add(map2);
-
-        Map<String, Object> map3 = new HashMap<String, Object>();
-        map3.put("OrderTotal", topTotal.get(3).get("count(*)"));
-        topTotal_.add(map3);
-
-        Map<String, Object> map4 = new HashMap<String, Object>();
-        map4.put("PayTotal", topTotal.get(4).get("count(*)"));
-        topTotal_.add(map4);
-
-        Map<String, Object> map5 = new HashMap<String, Object>();
-        map5.put("TranTotal", topTotal.get(5).get("count(*)"));
-        topTotal_.add(map5);
-
-        String jsonString = JSON.toJSONString(topTotal_);
+        String jsonString = JSON.toJSONString(topTotal);
         return jsonString;
     }
 
@@ -105,7 +77,7 @@ public class OperationSvcImpl implements IOperationSvc {
      * 查询所有状态订单数
      *//*
     public String getOrderTotal(){
-        String SQL = "select count(*) from jmbi_trade_order count(*) from jmbi_trade_order";
+        String SQL = "select count(*) from jmbi_trade_ordercount(*) from jmbi_trade_order";
         return impalaJDBC.getTotal(SQL);
     }
 
@@ -118,15 +90,17 @@ public class OperationSvcImpl implements IOperationSvc {
         return impalaJDBC.getTotal(SQL);
     }
 
-    */
-
-    /**
+    *//**
      * 累计交易金额
      *//*
     public String getTranTotal(){
         String SQL = "select sum(pay_amt) from jmbi_ep_trade  where status in (2,3,4)";
         return impalaJDBC.getTotal(SQL);
     }*/
+
+
+
+
     public static void main(String[] args) {
 //        String payTotal = new OperationSvcImpl().getMemberTotal();
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/applicationContext-bigdata.xml");

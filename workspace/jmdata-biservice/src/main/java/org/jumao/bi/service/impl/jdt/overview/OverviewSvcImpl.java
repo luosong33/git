@@ -170,7 +170,7 @@ public class OverviewSvcImpl extends JdbcDaoSupport implements IOverviewSvc {
         return Response.ok(pieCharts).build();
     }
 
-//    @Override
+    @Override
     public Response customer(String area) throws Exception {
         String startRow = "860";
         String endRow = "861";
