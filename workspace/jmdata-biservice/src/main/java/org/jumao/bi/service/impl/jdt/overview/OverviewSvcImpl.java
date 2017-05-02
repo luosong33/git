@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,11 +20,21 @@ import org.jumao.bi.entites.SeriesData;
 import org.jumao.bi.service.jdt.overview.IOverviewSvc;
 import org.jumao.commons.frameworks.jmframework.hbaseutil.dao.IHBaseDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class OverviewSvcImpl implements IOverviewSvc {
+public class OverviewSvcImpl extends JdbcDaoSupport implements IOverviewSvc {
 
     @Autowired
-    private IHBaseDao hBaseDao;
+    private IHBaseDao    hBaseDao;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Resource
+    public void setJb(JdbcTemplate jb) {
+        super.setJdbcTemplate(jb);
+    }
 
     public Response getOverview() throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();

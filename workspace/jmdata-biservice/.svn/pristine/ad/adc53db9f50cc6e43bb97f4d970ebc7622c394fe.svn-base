@@ -1,0 +1,24 @@
+package org.jumao.bi.service.impl.operate;
+
+import org.jumao.bi.service.operate.IOperationOverview;
+import org.jumao.bi.utis.ImpalaJDBC;
+
+/**
+ * Created by Administrator on 2017/4/26.
+ */
+public class OperationOverviewImpl implements IOperationOverview{
+
+    ImpalaJDBC impalaJDBC = new ImpalaJDBC();
+
+    public int getPayTotal(){
+        String SQL = "select count(*) from jmbi_ep_trade where status in (2,3,4)";
+        return impalaJDBC.getTotal(SQL);
+    }
+
+    public static void main(String[] args) {
+        int payTotal = new OperationOverviewImpl().getPayTotal();
+        System.out.println();
+    }
+
+
+}

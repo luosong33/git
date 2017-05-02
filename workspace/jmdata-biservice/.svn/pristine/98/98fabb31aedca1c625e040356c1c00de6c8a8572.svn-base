@@ -1,0 +1,24 @@
+package org.jumao.bi.service.operate;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+/**
+ * Created by Administrator on 2017/4/26.
+ */
+@Path("/v1/operate/")
+@Produces(MediaType.APPLICATION_JSON)
+public interface IOperationOverview {
+
+    /**
+     * 查询累计付款笔数
+     * @return
+     */
+    @GET
+    @Path("/payTotal")
+    public int getPayTotal();
+
+}
