@@ -1,0 +1,231 @@
+package org.jumao.bi.service.impl.trade.register;
+
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.jumao.bi.dao.trade.RegisterDao;
+import org.jumao.bi.entites.trade.register.*;
+import org.jumao.bi.entites.trade.register.vo.GroupByVo;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+import org.jumao.bi.service.trade.register.RegisterAnalysis;
+import org.jumao.bi.utis.GeneralUtils;
+import org.jumao.bi.utis.LogUtils;
+import org.jumao.bi.utis.RespUtils;
+import org.jumao.bi.utis.StringUtils;
+import org.jumao.bi.utis.constants.CN;
+import org.jumao.bi.utis.enums.AUOType;
+import org.jumao.bi.utis.enums.VUOType;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class RegisterAnalysisImpl extends RegisterBasic implements RegisterAnalysis {
+
+	private Logger logger = Logger.getLogger(this.getClass());
+	private Gson gson = new Gson();
+	private String START_TO = "start to";
+
+	@Autowired
+	private RegisterDao registerDao;
+
+
+
+	public Response getNewRegLineChart(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		boolean accurateToHour = checkAccurateToHour(startDate, endDate);
+		List<TimeTotalVo> list = registerDao.getNewlyIncrBy(platform, startDate, endDate, accurateToHour);
+		return Response.ok().entity(getLineChartFromNewRegs(list, CN.REG_NEWLYINCR, true, accurateToHour)).build();
+	}
+
+
+	public Response getNewRegPieChart(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		List<GroupByVo> list = registerDao.getDataSrcIncrBy(platform, startDate, endDate);
+		return Response.ok().entity(getPieChartFromGroupByVo(list, dataSrcNameMap)).build();
+	}
+
+
+	public Response getNewRegTable(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		boolean accurateToHour = checkAccurateToHour(startDate, endDate);
+		List<DataSrcIncrTable> list = registerDao.getDataSrcIncrTableBy(platform, startDate, endDate, accurateToHour);
+		long totalUser = registerDao.getTotalUserCounts();
+
+		return Response.ok().entity(getTableFromNewRegs(list, totalUser, true, accurateToHour)).build();
+	}
+
+
+	public Response getAuthUOverview(String platform, String startDate, String endDate, String typeStr) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+		int type = RespUtils.checkAUOType(typeStr);
+		List<TimeTotalVo> list = null;
+		boolean formatToNhAnd_ = true;
+		boolean accurateToHour = checkAccurateToHour(startDate, endDate);
+
+		if (AUOType.PV.getType() == type) {
+			list = registerDao.getPvOrUvBy(platform, startDate, endDate, true);
+			formatToNhAnd_ = false;
+
+		} else if (AUOType.UV.getType() == type) {
+			list = registerDao.getPvOrUvBy(platform, startDate, endDate, false);
+			formatToNhAnd_ = false;
+
+		} else if (AUOType.REGISTER.getType() == type) {
+			list = registerDao.getNewlyIncrBy(platform, startDate, endDate, accurateToHour);
+
+		} else if (AUOType.THREE_CERT_AUTH.getType() == type) {
+			list = registerDao.getCert3AuthBy(startDate, endDate, accurateToHour);
+
+		} else if (AUOType.AUTH_LETTER.getType() == type) {
+			list = registerDao.getAuthLetterBy(startDate, endDate, accurateToHour);
+		}
+		return Response.ok().entity(getLineChartFromNewRegs(list, AUOType.getNameByType(type), formatToNhAnd_, accurateToHour)).build();
+	}
+
+
+	public Response getAuthUCert3History(String platform) throws Exception {
+		RespUtils.checkPlatform(platform);
+		LogUtils.writeLogs(logger, StringUtils.joinStr(
+				GeneralUtils.getCurrMethod(), ", platform:", platform));
+
+		List<GroupByVo> list = registerDao.getAuthUCert3HistoryBy(platform);
+		return Response.ok().entity(getPieChartFromGroupByVo(list, compCategoryMap)).build();
+	}
+
+
+	public Response getAuthUPassedHistogram(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		boolean accurateToHour = checkAccurateToHour(startDate, endDate);
+		List<TimeTotalVo> list = registerDao.getCert3AuthBy(startDate, endDate, accurateToHour);
+		return Response.ok().entity(getLineChartFromNewRegs(list, CN.AUTH_USER_PASSED, true, accurateToHour)).build();
+	}
+
+
+	public Response getAuthULicPercentPie(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		List<GroupByVo> list = registerDao.getLicPercentPieBy(platform, startDate, endDate);
+		return Response.ok().entity(getPieChartFromGroupByVo(list, licTpyeNameMap)).build();
+	}
+
+
+	public Response getAuthUAreaDist(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		List<GroupByVo> cert3List = registerDao.getCert3AndAuthLetterAreaPieBy(startDate, endDate, 0);
+		return Response.ok().entity(getPieChartFromGroupByVo(cert3List, getProvinceCodeNameMap(cert3List))).build();
+	}
+
+
+	public Response getAuthUAreaDistTop10(String platform, String startDate, String endDate) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+		List<GroupByVo> list = registerDao.getCert3AndAuthLetterAreaPieBy(startDate, endDate, 10);
+		return Response.ok().entity(getBarChartFromNewRegs(
+				list, getProvinceCodeNameMap(list), CN.AUTH_USER_AREA_DIST_TOP10)).build();
+	}
+
+
+	public Response getVisaAndPayOverview(String platform, String startDate, String endDate, String typeStr) throws Exception {
+		LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+		int type = RespUtils.checkVUOType(typeStr);
+		List<TimeTotalVo> list = null;
+		boolean formatToNhAnd_ = true;
+		boolean accurateToHour = checkAccurateToHour(startDate, endDate);
+
+		if (VUOType.PV.getType() == type) {
+			list = registerDao.getPvOrUvBy(platform, startDate, endDate, true);
+			formatToNhAnd_ = false;
+
+		} else if (VUOType.UV.getType() == type) {
+			list = registerDao.getPvOrUvBy(platform, startDate, endDate, false);
+			formatToNhAnd_ = false;
+
+		} else if (VUOType.VISA.getType() == type) {
+			list = registerDao.getVisaTTVsBy(platform, startDate, endDate, accurateToHour);
+
+		} else if (VUOType.PAY.getType() == type) {
+			list = registerDao.getPayTTVsBy(platform, startDate, endDate, accurateToHour);
+
+		}
+		return Response.ok().entity(
+				getLineChartFromNewRegs(list, VUOType.getNameByType(type), formatToNhAnd_, accurateToHour)).build();
+	}
+
+
+	public Response getVisaAndPayHistoryPie(String platform) throws Exception {
+		try {
+			RespUtils.checkPlatform(platform);
+			LogUtils.writeLogs(logger, StringUtils.joinStr(
+					GeneralUtils.getCurrMethod(), ", platform:", platform));
+
+			long visaHistoryTotal = registerDao.getVisaHisTotal(platform);
+			long payHistoryTotal = registerDao.getPayHisTotal(platform);
+
+
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Response getVisaAndPayAreaDist(String platform, String startDate, String endDate) throws Exception {
+		try {
+			LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+			List<GroupByVo> visaList = registerDao.getVisaOrPayAreaDistBy(platform, startDate, endDate, 0, true);
+			List<GroupByVo> payList = registerDao.getVisaOrPayAreaDistBy(platform, startDate, endDate, 0, false);
+
+			ChartResp visaCp = getPieChartFromGroupByVo(visaList, getProvinceCodeNameMap(visaList));
+			ChartResp payCp = getPieChartFromGroupByVo(payList, getProvinceCodeNameMap(payList));
+
+			Map<String, ChartResp> legendCpMap = new HashMap<String, ChartResp>();
+			legendCpMap.put(CN.VISA, visaCp);
+			legendCpMap.put(CN.PAY, payCp);
+			return Response.ok().entity(getPieForMultiDim(legendCpMap)).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	public Response getVisaAreaDistTop10(String platform, String startDate, String endDate) throws Exception {
+		try {
+			LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+			List<GroupByVo> visaList = registerDao.getVisaOrPayAreaDistBy(platform, startDate, endDate, 10, true);
+			return Response.ok().entity(
+					getBarChartFromNewRegs(visaList, getProvinceCodeNameMap(visaList), CN.VISA))
+					.build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	public Response getPayAreaDistTop10(String platform, String startDate, String endDate) throws Exception {
+		try {
+			LogUtils.writeLogs(logger, checkAndlogDateRange(platform, startDate, endDate));
+
+			List<GroupByVo> payList = registerDao.getVisaOrPayAreaDistBy(platform, startDate, endDate, 10, false);
+			return Response.ok().entity(
+					getBarChartFromNewRegs(payList, getProvinceCodeNameMap(payList), CN.PAY))
+					.build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+}

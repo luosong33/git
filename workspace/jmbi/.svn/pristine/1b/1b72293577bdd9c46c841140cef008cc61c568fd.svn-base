@@ -1,0 +1,614 @@
+<template>
+  <div>
+    <!--面包屑-->
+    <el-breadcrumb separator=">">
+      <span class="el-breadcrumb__item"><span>我的位置：</span></span>
+      <el-breadcrumb-item :to="{ path: '/home' }">聚贸平台</el-breadcrumb-item>
+      <el-breadcrumb-item>运营情况</el-breadcrumb-item>
+      <el-breadcrumb-item>注册分析</el-breadcrumb-item>
+      <el-breadcrumb-item>注册用户数</el-breadcrumb-item>
+    </el-breadcrumb>
+  
+    <range-date-picker v-on:selectedRangeDate="getRangeDate"></range-date-picker>
+  
+    <el-row class="jm-grid-border-1px">
+      <header class="panel-header jm-grid-box-bg-white jm-grid-border-bottom-1px">签章支付
+        <el-tooltip class="item" content="网站访客来自哪里，构成比例。" placement="top-end">
+          <span class="jm-tooltip-icon"></span>
+        </el-tooltip>
+      </header>
+      <div class="auth-user-botton-group">
+        <el-button size="small" type="primary" :type="primary0" @click="loadSignaturePayIndex(0)">浏览量</el-button>
+        <el-button size="small" :type="primary1" @click="loadSignaturePayIndex(1)">独立访客</el-button>
+        <el-button size="small" :type="primary2" @click="loadSignaturePayIndex(2)">签章开通数</el-button>
+        <el-button size="small" :type="primary3" @click="loadSignaturePayIndex(3)">支付开通数</el-button>
+  
+      </div>
+      <el-col :xs="24" :sm="24" :md="24" :lg="16">
+        <div class="grid-content jm-grid-box-bg-white">
+  
+          <div class="box chart row-group-last" :class="{'no-data': loadingsignaturePayIndexText === '暂无数据'}" v-loading="loadingsignaturePayIndex" :element-loading-text="loadingsignaturePayIndexText">
+            <div class="content" ref='signaturePayLineChart'>
+  
+            </div>
+  
+          </div>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="8">
+        <div class="grid-content jm-grid-box-bg-white signature-pay-container">
+  
+          <div class="signature-pay clearfix">
+            <div class="left content">
+              <p class="title">签章开通历史累计：</p>
+              <p class="amount">376</p>
+            </div>
+            <div class="right content">
+              <p class="title">支付开通历史累计：</p>
+              <p class="amount">276</p>
+            </div>
+          </div>
+  
+          <div class="box  chart row-group-last" v-loading="loadingTODOChart" element-loading-text="加载中...">
+            <div class="content" ref='newAddedUserPieChart'>
+  
+            </div>
+          </div>
+  
+        </div>
+      </el-col>
+    </el-row>
+    <!--end of 签章支付-->
+  
+    <el-row class="jm-grid-border-1px">
+      <header class="panel-header jm-grid-box-bg-white jm-grid-border-bottom-1px">签章、支付开通地域分布
+  
+      </header>
+  
+      <el-col :xs="24" :sm="24" :md="24" :lg="12">
+        <div class="grid-content jm-grid-box-bg-white">
+  
+          <div class="box chart row-group-last" v-loading="loadingsignaturePayChinaMap" element-loading-text="加载中...">
+            <div class="content" ref='signaturePayMapChart'>
+  
+            </div>
+  
+          </div>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="12">
+        <div class="grid-content jm-grid-box-bg-white ">
+  
+          <div class="box  chart row-group-last" v-loading="loadingTODOChart" element-loading-text="加载中...">
+            <div class="content" ref='threeCertAuditBarChart'>
+  
+            </div>
+          </div>
+  
+        </div>
+      </el-col>
+    </el-row>
+    <!--end of 签章支付-->
+  
+  </div>
+</template>
+
+<script>
+import {
+  signaturePayIndex,
+  signaturePayChinaMap,
+  // delete below
+  getSources,
+  getCompanyNum,
+  getCompanyTopAmount,
+  pageVisit
+} from '@/service/api'
+import util from '@/service/util'
+
+import rangeDatePicker from '@/components/RangeDatePicker'
+
+import echarts from 'echarts';
+// https://segmentfault.com/q/1010000008182097
+import 'echarts/map/js/china'
+
+export default {
+  name: 'signaturePay',
+  components: {
+    rangeDatePicker
+  },
+  methods: {
+    getRangeDate({ startDate, endDate }) {
+      this.startDate = startDate;
+      this.endDate = endDate;
+      this.loadAllData();
+    },
+    loadAllData() {
+      var vm = this;
+      var type = vm.indexType;
+      vm.loadSignaturePayIndex(type)
+
+      var platform = vm.platformId,
+        startDate = vm.startDate,
+        endDate = vm.endDate;
+
+      vm.loadingsignaturePayChinaMap = true
+      signaturePayChinaMap({
+        platform,
+        startDate,
+        endDate
+      }).then(function (response) {
+        vm.loadingsignaturePayChinaMap = false
+        var chartData = response.data
+
+
+
+        vm.loadsignaturePayMapChart(chartData)
+
+      })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    },
+    getPrimary(type) {
+      return this.indexType == type ? "primary" : '';
+    },
+    loadSignaturePayIndex(type) {
+      var vm = this;
+      var platform = vm.platformId,
+        startDate = vm.startDate,
+        endDate = vm.endDate;
+      vm.indexType = type;
+
+      vm.primary0 = vm.getPrimary(0)
+      vm.primary1 = vm.getPrimary(1)
+      vm.primary2 = vm.getPrimary(2)
+      vm.primary3 = vm.getPrimary(3)
+
+      vm.loadingsignaturePayIndex = true
+      vm.loadingsignaturePayIndexText = '加载中...'
+      signaturePayIndex({
+        platform,
+        startDate,
+        endDate,
+        type
+      }).then(function (response) {
+        vm.loadingsignaturePayIndex = false
+        var chartData = response.data
+        if (chartData.lineChart.seriesData.length === 0) {
+          vm.loadingsignaturePayIndex = true
+          vm.loadingsignaturePayIndexText = '暂无数据'
+        }
+        vm.loadsignaturePayLineChart(chartData)
+
+      })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    },
+    // 签章支付
+    loadsignaturePayLineChart(chartData) {
+      var vm = this;
+      // 基于准备好的dom，初始化echarts实例
+      vm.signaturePayLineChart = echarts.init(vm.$refs.signaturePayLineChart);
+
+      var lineChart = chartData.lineChart
+
+      // 绘制图表
+      var option = {
+        color: ["#44cd8a", "#5eb2ec", "#b6a4dd"],
+        tooltip: {
+          trigger: 'axis'
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '5%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          axisLine: {
+            lineStyle: {
+              color: '#158bca'
+            }
+          },
+          data: lineChart.xAxisData
+        },
+        yAxis: {
+          //name: '次',
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#158bca'
+            }
+          }
+        },
+        series: [
+          {
+            name: lineChart.legendData,
+            type: 'line',
+            smooth: true,
+            data: lineChart.seriesData
+          }]
+      };
+
+      vm.signaturePayLineChart.setOption(option)
+    },
+
+    // 用户登录情况
+    loadnewAddedUserPieChart(chartData) {
+      var vm = this;
+      // 基于准备好的dom，初始化echarts实例
+      vm.newAddedUserPieChart = echarts.init(vm.$refs.newAddedUserPieChart);
+      // console.log('用户登录情况', chartData)
+      // var pieChart = chartData.pieChart
+      // 绘制图表
+      var option = {
+        color: ['#1790cf', '#3ab882', '#fcb738', '#99d2dd', '#88b0bb', '#22b1e6', '#4598ff'],
+        title: {
+          //text: chartData.title,
+          left: 'center',
+          bottom: '5%',
+          textStyle: {
+            color: '#666',
+            fontWeight: 'normal',
+            fontSize: 14
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+          //name: chartData.seriesName,
+          type: 'pie',
+          radius: ['30%', '60%'],
+          center: ['50%', '55%'],
+          //data: chartData.seriesData,
+          data: [
+            { value: 335, name: '直接访问' },
+            { value: 310, name: '邮件营销' },
+            { value: 234, name: '联盟广告' },
+            { value: 135, name: '视频广告' },
+            { value: 1548, name: '搜索引擎' }
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }]
+      };
+
+      vm.newAddedUserPieChart.setOption(option)
+    },
+
+
+
+
+    // 三证审核地域分布
+    loadsignaturePayMapChart(chartData) {
+      var vm = this;
+      // 基于准备好的dom，初始化echarts实例
+      vm.signaturePayMapChart = echarts.init(vm.$refs.signaturePayMapChart);
+
+      var map = chartData.pieChart
+      let seriesData = map.series.map(function (item) {
+        return Object.assign(item, {
+          type: 'map', mapType: 'china', roam: true, label: {
+            normal: {
+              show: true
+            },
+            emphasis: {
+              show: true
+            }
+          }
+        })
+      })
+
+      console.log('seriesData', seriesData)
+
+      let maxValue = 0;
+      map.series.forEach(function (item) {
+
+        item.data.forEach(function (data) {
+          let v = Number(data.value)
+          if (v > maxValue) {
+            maxValue = v;
+          }
+        })
+
+      })
+
+      if (maxValue === 0) {
+        maxValue = 255;
+      }
+
+      // 绘制图表
+      var option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: function (obj) {
+            var areaName = obj.name
+            let arr = [];
+            for (let index = 0; index < seriesData.length; index++) {
+              let filteredData = seriesData[index].data.filter(function (item) {
+                return item.name === areaName
+              })
+
+              arr.push({
+                type: seriesData[index].name,
+                data: filteredData.length > 0 ? filteredData[0] : {}
+              })
+            }
+
+            let result = areaName
+
+            arr.forEach(function (item) {
+              if (typeof item.data.value !== 'undefined') {
+                result += '<br>' + item.type + ': ' + item.data.value
+              }
+
+            })
+
+            return result
+
+          }
+
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: map.legend.data
+        },
+        visualMap: {
+          // orient: 'horizontal',
+          inverse: 'true',
+          min: 0,
+          max: maxValue,// chartData.max, // todo
+          // left: '65px',
+          // top: '15px',
+          text: ['高', '低'], // 文本，默认为数值文本
+          inRange: {
+            color: ['#e0ffff', '#006edd']
+          }
+        },
+        // geo: {
+        //   map: 'china',
+        //   roam: true,
+        //   label: {
+        //     normal: {
+        //       show: true,
+        //       textStyle: {
+        //         color: 'rgba(0,0,0,0.4)'
+        //       }
+        //     }
+        //   },
+        //   itemStyle: {
+        //     normal: {
+        //       borderColor: 'rgba(0, 0, 0, 0.2)'
+        //     },
+        //     emphasis: {
+        //       areaColor: null,
+        //       shadowOffsetX: 0,
+        //       shadowOffsetY: 0,
+        //       shadowBlur: 20,
+        //       borderWidth: 0,
+        //       shadowColor: 'rgba(0, 0, 0, 0.5)'
+        //     }
+        //   }
+        // },
+        series: seriesData
+      };
+
+      vm.signaturePayMapChart.setOption(option)
+    },
+
+    // 三证审核地域分布
+    loadthreeCertAuditBarChart(chartData) {
+      var vm = this;
+      // 基于准备好的dom，初始化echarts实例
+      vm.threeCertAuditBarChart = echarts.init(vm.$refs.threeCertAuditBarChart);
+
+      var existCountChart = chartData.existCountChart
+      // 绘制图表
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          top: '8%',
+          left: '5%',
+          right: '5%',
+          bottom: '8%',
+          containLabel: true
+        },
+        xAxis: {
+          name: '次',
+          type: 'value',
+          boundaryGap: false,
+          axisLine: {
+            lineStyle: {
+              color: '#008acd'
+            }
+          }
+        },
+        yAxis: {
+          type: 'category',
+          splitLine: {
+            show: true
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#008acd'
+            }
+          },
+          axisLabel: {
+            formatter: function (value, index) {
+              var value = value || ''
+              var maxLength = 15
+              if (value.length > maxLength) {
+                value = value.substring(0, maxLength) + '...';
+              }
+              return value;
+            },
+            rotate: 20
+          },
+          data: existCountChart.yAxisData.reverse()
+        },
+        series: [{
+          name: existCountChart.seriesName,
+          type: 'bar',
+          barWidth: '20px',
+          itemStyle: {
+            normal: {
+              color: '#1790cf',
+              barBorderRadius: 2
+            }
+          },
+          data: existCountChart.seriesData.reverse()
+        }]
+      };
+
+      vm.threeCertAuditBarChart.setOption(option)
+    },
+
+  },
+
+  mounted() {
+    var vm = this;
+
+    vm.loadAllData();
+    var platform = '',
+      startDate = '',
+      endDate = '';
+    // getSources({
+    //   platform,
+    //   startDate,
+    //   endDate
+    // }).then(function (response) {
+    //   //  vm.loadinguserLoginLineChart = false
+    //   var chartData = response.data
+    //   vm.loadsignaturePayLineChart(chartData)
+    //   //vm.loaduserLoginPieChart(chartData)
+    // })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    vm.loadnewAddedUserPieChart();
+
+    //vm.loadcertAuditChart();
+
+    // vm.loadingregisterUserAreaBarChart = true
+    // todo: 
+    // pageVisit({
+    //   platform,
+    //   startDate,
+    //   endDate
+    // }).then(function (response) {
+
+    //   //  vm.loadingregisterUserAreaBarChart = false
+    //   var chartData = response.data
+    //   console.log(chartData)
+    //   vm.loadregisterUserAreaBarChart(chartData)
+    // })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+
+
+    // vm.loadthreeCertAuditBarChart();
+
+    // todo: 
+    pageVisit({
+      platform,
+      startDate,
+      endDate
+    }).then(function (response) {
+
+      //  vm.loadingregisterUserAreaBarChart = false
+      var chartData = response.data
+      console.log(chartData)
+      vm.loadthreeCertAuditBarChart(chartData)
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
+  },
+  data() {
+    return {
+      platformId: '1025',
+      startDate: new Date().format(),
+      endDate: new Date().format(),
+      indexType: 0, // 浏览量
+      primary0: 'primary',
+      primary1: '',
+      primary2: '',
+      primary3: '',
+      loadingsignaturePayIndex: false,
+      loadingsignaturePayIndexText: '加载中...',
+      loadingsignaturePayChinaMap: false,
+      loadingTODOChart: false,
+
+    }
+  }
+}
+
+
+</script>
+
+<style>
+.auth-user-botton-group {
+  background: #fff;
+  padding: 20px 65px;
+}
+
+.signature-pay-container {
+  position: relative;
+}
+
+.signature-pay {
+  position: absolute;
+  top: -50px;
+  width: 100%;
+  text-align: center;
+  /*left: 50%;*/
+}
+
+.signature-pay .content {
+  width: 50%;
+}
+
+.signature-pay .content:first-child::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 0;
+  height: 90%;
+  top: 5%;
+  right: 50%;
+  border-right: 1px solid #eeeeee;
+}
+
+.signature-pay .title {
+  font-size: 16px;
+}
+
+.signature-pay .amount {
+  font-size: 40px;
+  color: #3ab882;
+  text-align: center;
+}
+</style>

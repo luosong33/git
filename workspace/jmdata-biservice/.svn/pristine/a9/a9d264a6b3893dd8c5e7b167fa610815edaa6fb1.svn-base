@@ -1,0 +1,59 @@
+package org.jumao.bi.dao.trade.impl;
+
+import org.apache.log4j.Logger;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+import org.jumao.bi.utis.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Calendar;
+import java.util.List;
+
+/**
+ * Created by kartty on 2017/5/4.
+ */
+public class RegisterBasicDao {
+
+    private Logger logger = Logger.getLogger(RegisterBasicDao.class);
+
+    @Autowired
+    protected JdbcTemplate jdbcTemplate;
+
+
+    protected String dealPlatform(String platform, int needLen) {
+        int len = platform.length();
+        if (len == needLen) {
+            return platform;
+
+        } else if (len < needLen) {
+            int diff = needLen - len;
+            StringBuilder sb = new StringBuilder(platform);
+            for (int i = 0; i < diff; i++) {
+                sb.append("0");
+            }
+            platform = sb.toString();
+
+        } else {
+            platform = platform.substring(0, needLen);
+        }
+        LogUtils.writeLogs(logger, StringUtils.joinStr(GeneralUtils.getCurrMethod(),
+                " transform new platform:", platform));
+        return platform;
+    }
+
+    protected String dealStartDate(String startDate) throws Exception {
+        return RegDateUtils.formatToFullF(RegDateUtils.parseToNoHourAnd_(startDate));
+    }
+
+    protected String dealEndDate(String endDate) throws Exception {
+        Calendar c = RegCalUtils.getCalendarBy(RegDateUtils.parseToNoHourAnd_(endDate));
+        c.add(Calendar.SECOND, 86399);//加上 24*60*60 -1 秒
+        return RegDateUtils.formatToFullF(c.getTime());
+    }
+
+    protected <T> List<T> getVoList(String sql, Class<T> clazz) {
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<T>(clazz));
+    }
+
+}

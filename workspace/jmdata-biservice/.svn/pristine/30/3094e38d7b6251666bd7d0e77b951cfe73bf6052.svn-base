@@ -1,0 +1,14 @@
+package org.jumao.bi.utis.constants;
+
+/**
+ * Created by kartty on 2017/5/3.
+ */
+public class Table {
+
+    public static final String UC_JUMORE_USER = "default.jmbi_uc_jumore_user";
+    public static final String BAIDU_DAILY_STAT = "default.jmbi_baidu_daily_stat";
+    public static final String TRADE_COMPANY = "default.jmbi_trade_company";
+    public static final String UC_COMPANY = "default.jmbi_uc_company";
+    public static final String AREA = "default.jmbi_trade_operation_area";
+
+}

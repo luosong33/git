@@ -1,0 +1,191 @@
+package org.jumao.bi.service.impl.trade.register;
+
+import org.apache.log4j.Logger;
+import org.jumao.bi.entites.charts.CommonBean;
+import org.jumao.bi.entites.charts.PieChart;
+import org.jumao.bi.entites.trade.register.*;
+import org.jumao.bi.entites.trade.register.vo.GroupByVo;
+import org.jumao.bi.entites.trade.register.vo.TableVo;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+import org.jumao.bi.utis.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by kartty on 2017/5/2.
+ */
+public class RegisterBasic extends RegisterHelper {
+
+    private Logger logger = Logger.getLogger(RegisterBasic.class);
+
+    protected String checkAndlogDateRange(String platform, String startDate, String endDate) throws Exception {
+        RespUtils.checkPlatform(platform);
+        RespUtils.checkDateRange(startDate, endDate);
+        return StringUtils.joinStr(GeneralUtils.getUpperMethod(), ", platform:", platform,
+                ", startDate:", startDate, ", endDate:", endDate);
+    }
+
+    /**
+     * 处理折线图、柱状图
+     */
+    protected ChartResp getLineChartFromNewRegs(List<TimeTotalVo> list, String legend, boolean formatToNhAnd_) {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+        if (list == null) {
+            return cp;
+        }
+
+        RegLineChart lc = new RegLineChart();
+        lc.setLegendData(legend);
+
+        int size = list.size();
+        String[] xAxisData = new String[size];
+        long[] seriesData = new long[size];
+
+        for (int i = 0; i < size; i++) {
+            try {
+                TimeTotalVo ttv = list.get(i);
+                if (formatToNhAnd_) {
+                    xAxisData[i] = RegDateUtils.formatToNoHourAnd_(RegDateUtils.parseStartWithFF(ttv.getCreateTime()));
+                } else {
+                    xAxisData[i] = ttv.getCreateTime();
+                }
+                seriesData[i] = ttv.getTotal();
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        lc.setxAxisData(xAxisData);
+        lc.setSeriesData(seriesData);
+
+        cp.setLineChart(lc);
+        return cp;
+    }
+
+    /**
+     * 处理条形图
+     */
+    protected ChartResp getBarChartFromNewRegs(List<GroupByVo> list,
+            Map<Integer, String> typeNameMap, String legend) {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+        if (list == null) {
+            return cp;
+        }
+
+        RegLineChart lc = new RegLineChart();
+        lc.setLegendData(legend);
+
+        int size = list.size();
+        String[] yAxisData = new String[size];
+        long[] seriesData = new long[size];
+
+        for (int i = 0; i < size; i++) {
+            try {
+                GroupByVo gbv = list.get(i);
+                int type = gbv.getType();
+                yAxisData[i] = checkTypeName(type, typeNameMap.get(type));
+                seriesData[i] = gbv.getTotal();
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        lc.setyAxisData(yAxisData);
+        lc.setSeriesData(seriesData);
+
+        cp.setLineChart(lc);
+        return cp;
+    }
+
+    protected Map<Integer,String> getProvinceCodeNameMap(List<GroupByVo> list) {
+        Map<Integer, String> provinceCodeNameMap = new HashMap<Integer, String>();
+
+        for (GroupByVo ele : list) {
+            Integer areaCode = ele.getType();
+            if (areaCode == null) {
+                continue;
+            }
+            String areaName = ele.getTypeName();
+            if (areaName.startsWith("广西") || areaName.startsWith("宁夏") || areaName.startsWith("新疆")) {
+                provinceCodeNameMap.put(areaCode, areaName.substring(0, 2));
+
+            } else {
+                areaName = areaName.replaceAll("(市|省|自治区|特别行政区)", "");
+                provinceCodeNameMap.put(areaCode, areaName);
+            }
+        }
+
+        return provinceCodeNameMap;
+    }
+
+    /**
+     * 处理饼图、中国地图
+     */
+    protected ChartResp getPieChartFromGroupByVo(List<GroupByVo> list,
+            Map<Integer, String> typeNameMap) {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+
+        PieChart pc = new PieChart();
+        int size = list.size();
+
+        String[] legendData = new String[size];
+        List<CommonBean> seriesData = new ArrayList<CommonBean>(size);
+        long sumCounts = 0L;
+
+        for (int i = 0; i < size; i++) {
+            try {
+                GroupByVo dsi = list.get(i);
+                Integer type = dsi.getType();
+                String name = checkTypeName(type, typeNameMap.get(type));
+
+                legendData[i] = name;
+                seriesData.add(new CommonBean(name, String.valueOf(dsi.getTotal())));
+                sumCounts += dsi.getTotal();
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        pc.setLegendData(legendData);
+        pc.setSeriesData(seriesData);
+        cp.setPieChart(pc);
+        cp.setCounts(sumCounts);
+        return cp;
+    }
+
+
+    protected ChartResp getTableFromNewRegs(List<DataSrcIncrTable> list, long totalUser) throws Exception {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+
+        double sumCounts = 0D;
+        for (DataSrcIncrTable ele : list) {
+            sumCounts += ele.getCounts();
+        }
+
+        List<TableVo> tableData = new ArrayList<TableVo>(list.size());
+        for (DataSrcIncrTable ele : list) {
+            try {
+                Integer type = ele.getType();
+                double totalD = ele.getCounts();
+                String rate = dealRatePercent(totalD, sumCounts);
+
+                tableData.add(new TableVo(ele.getCreateTime(),
+                        checkTypeName(type, dataSrcNameMap.get(type)),
+                        String.valueOf(ele.getCounts()),
+                        rate));
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        cp.setTableData(tableData);
+        cp.setCounts((long) sumCounts);
+        cp.setPercent(dealRatePercent(sumCounts, totalUser));
+        return cp;
+    }
+
+
+}

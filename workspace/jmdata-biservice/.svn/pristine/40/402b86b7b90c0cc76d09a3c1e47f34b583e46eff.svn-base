@@ -1,0 +1,106 @@
+package org.jumao.bi.utis.constants;
+
+/**
+ * Created by kartty on 2017/5/3.
+ */
+public class Url {
+
+    private static final String PLATFORM_AND_DATE_RANGE_PATH_PARAM =
+            "/"+Key.PLATFORM+"/{"+Key.PLATFORM+"}/"+Key.START_DATE+"/{"+Key.START_DATE+"}/"+Key.END_DATE+"/{"+Key.END_DATE+"}";
+
+
+    private static final String NEWLY_INCR = "newlyIncr";
+    private static final String LINE_CHART = "lineChart";
+    private static final String PIE_CHART = "pieChart";
+    private static final String BAR_CHART = "barChart";//条形图，横着的柱状图
+    private static final String TABLE = "table";
+    private static final String HISTOGRAM = "histogram";
+    private static final String CHINA_MAP = "chinaMap";
+
+    //以下注册分析-日新增用户
+    /**
+     * e.g. /newlyIncr/lineChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String REG_NEWLYINCR_LINECHART = "/" + NEWLY_INCR + "/" + LINE_CHART + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /newlyIncr/pieChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String REG_NEWLYINCR_PIECHART = "/" + NEWLY_INCR + "/" + PIE_CHART + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /newlyIncr/table/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String REG_NEWLYINCR_TABLE = "/" + NEWLY_INCR + "/" + TABLE + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    //以下注册分析-认证用户
+    private static final String AUTH_USER = "authUser";
+    private static final String OVERVIEW = "overview";
+    private static final String CERT_3 = "cert3";
+    private static final String LIC_PERCENT = "licPercent";
+    private static final String AREA_DIST = "areaDist";
+
+    /**
+     * e.g. /authUser/overview/lineChart/platform/1025/startDate/20160501/endDate/20170701/type/1
+     */
+    public static final String AUTH_U_OVERVIEW_LINECHART = "/" + AUTH_USER + "/" + OVERVIEW + "/" + LINE_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM + "/" + Key.TYPE + "/{" + Key.TYPE + "}";
+    /**
+     * e.g. /authUser/cert3/history/platform/1025
+     */
+    public static final String AUTH_U_CERT3_HISTORY = "/" + AUTH_USER + "/" + CERT_3 + "/" + Key.HISTORY + "/" +
+            Key.PLATFORM + "/{" + Key.PLATFORM + "}";
+    /**
+     * e.g. /authUser/passed/histogram/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String AUTH_U_PASSED_HISTOGRAM = "/" + AUTH_USER + "/" + Key.PASSED + "/" + HISTOGRAM +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /authUser/licPercent/pieChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String AUTH_U_LIC_PIE = "/" + AUTH_USER + "/" + LIC_PERCENT + "/" + PIE_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /authUser/areaDist/chinaMap/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String AUTH_U_AREA_DIST = "/" + AUTH_USER + "/" + AREA_DIST + "/" + CHINA_MAP +
+                    PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /authUser/areaDist/barChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String AUTH_U_AREA_DIST_TOP10 = "/" + AUTH_USER + "/" + AREA_DIST + "/" + BAR_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    //以下注册分析-签章支付
+    private static final String VISA_AND_PAY = "visaAndPay";
+    private static final String VISA = "visa";
+    private static final String PAY = "pay";
+    /**
+     * e.g. /visaAndPay/overview/lineChart/platform/102000/startDate/20160501/endDate/20170701/type/1
+     */
+    public static final String VISA_AND_PAY_OVERVIEW_LINECHART = "/" + VISA_AND_PAY + "/" + OVERVIEW + "/" + LINE_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM + "/" + Key.TYPE + "/{" + Key.TYPE + "}";
+    /**
+     * e.g. /visaAndPay/history/platform/102000
+     */
+    public static final String VISA_AND_PAY_HISTORY_PIE = "/" + VISA_AND_PAY + "/" + Key.HISTORY + "/" +
+            Key.PLATFORM + "/{" + Key.PLATFORM + "}";
+    /**
+     * e.g. /visaAndPay/areaDist/chinaMap/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String VISA_AND_PAY_AREA_DIST = "/" + VISA_AND_PAY + "/" + AREA_DIST + "/" + CHINA_MAP +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /visa/areaDist/barChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String VISA_AREA_DIST_TOP10 = "/" + VISA + "/" + AREA_DIST + "/" + BAR_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /Pay/areaDist/barChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String PAY_AREA_DIST_TOP10 = "/" + PAY + "/" + AREA_DIST + "/" + BAR_CHART +
+            PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+
+
+
+}

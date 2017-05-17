@@ -1,0 +1,246 @@
+package org.jumao.bi.dao.trade.impl;
+
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Logger;
+import org.jumao.bi.dao.trade.RegisterDao;
+import org.jumao.bi.entites.trade.register.*;
+import org.jumao.bi.entites.trade.register.vo.GroupByVo;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+import org.jumao.bi.utis.*;
+import org.jumao.bi.utis.constants.Key;
+import org.jumao.bi.utis.constants.Table;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository(RegisterDaoImpl.REGISTER_DAO)
+public class RegisterDaoImpl extends RegisterBasicDao implements RegisterDao {
+
+    private Logger logger = Logger.getLogger(RegisterDaoImpl.class);
+    public static final String REGISTER_DAO = "registerDao";
+
+    private int LEN_4 = 4;
+    private int LEN_6 = 6;
+
+
+    public List<TimeTotalVo> getNewlyIncrBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select strleft(CAST(create_time AS string), 10) as ", Key.CREATE_TIME,
+                ", count(distinct id) as ", Key.TOTAL, " from ", Table.UC_JUMORE_USER,
+                " where platform = '", platform, "' and ",
+                "(create_time between '", startDate, "' and '", endDate, "') ",
+                "group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+
+    public List<GroupByVo> getDataSrcIncrBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select data_source_type as ", Key.TYPE,
+                ", count(distinct id) as ", Key.TOTAL, " from ", Table.UC_JUMORE_USER,
+                " where platform = '", platform, "' and ",
+                "create_time between '", startDate, "' and '", endDate, "' group by data_source_type");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+    public long getTotalUserCounts() {
+        String sql = StringUtils.joinStr("select count(*) from ", Table.UC_JUMORE_USER);
+        return jdbcTemplate.queryForObject(sql, Long.class);
+    }
+
+
+    public List<DataSrcIncrTable> getDataSrcIncrTableBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+ 
+        String sql = StringUtils.joinStr("select strleft(CAST(create_time AS string), 10) as ",
+                Key.CREATE_TIME, ", data_source_type as ", Key.TYPE,
+                ", count(distinct id) as ", Key.TOTAL, " from ", Table.UC_JUMORE_USER,
+                " where platform = '", platform, "' and ",
+                "create_time between '", startDate, "' and '", endDate,
+                "' group by ", Key.CREATE_TIME, ", data_source_type ",
+                "order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, DataSrcIncrTable.class);
+    }
+
+
+    /**
+     * @param platform 需要6位
+     * @param startDate e.g. 20170707
+     * @param endDate e.g. 20170708
+     */
+    public List<TimeTotalVo> getPvOrUvBy(String platform, String startDate, String endDate, boolean ispv) throws Exception {
+        platform = dealPlatform(platform, LEN_6);
+        String v = ispv ? "pv" : "uv";
+
+        String sql = StringUtils.joinStr(
+                "select createdate as ", Key.CREATE_TIME,
+                ", ", v, " as ", Key.TOTAL_STR, " from ", Table.BAIDU_DAILY_STAT,
+                " where platformid = '", platform, "' and ",
+                "(createdate between '", startDate, "' and '", endDate, "') ",
+                " order by ", Key.CREATE_TIME, " asc");
+
+        List<TimeTotalVo> list = getVoList(sql, TimeTotalVo.class);
+        for (TimeTotalVo ele : list) {
+            String totalStr = ele.getTotalStr();
+            if (NumberUtils.isDigits(totalStr)) {
+                ele.setTotal(Long.parseLong(totalStr));
+            } else {
+                ele.setTotal(0L);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 企业不区分 platform
+     */
+    public List<TimeTotalVo> get3CertAuthBy(String startDate, String endDate) throws Exception {
+        boolean haveDateRange = false;
+        if (Verifier.isEfficStrs(startDate, endDate)) {
+            startDate = dealStartDate(startDate);
+            endDate = dealEndDate(endDate);
+            haveDateRange = true;
+        }
+        //样例sql: select LEFT(create_time, 10) as day,count(DISTINCT c.comp_id) from trade_company c
+        // where c.valid_status=2 and create_time <= query_end_time and create_time >= query_start_time
+        // group by LEFT(create_time, 10)
+
+        String sql = StringUtils.joinStr(
+                "select strleft(CAST(create_time AS string), 10) as ", Key.CREATE_TIME,
+                ", count(distinct comp_id) as ", Key.TOTAL, " from ", Table.TRADE_COMPANY,
+                " where delete_flag = 0 and valid_status = 2 ",
+                haveDateRange ? StringUtils.joinStr("and (create_time between '", startDate, "' and '", endDate, "')") : "",
+                " group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+
+    public List<TimeTotalVo> getAuthLetterBy(String startDate, String endDate) throws Exception {
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+        //样例sql: select LEFT(create_time, 10) as day,count(DISTINCT c.comp_id) from trade_company c
+        // where c.license_file is not null and create_time <= query_end_time and
+        // create_time >= query_start_time group by LEFT(create_time, 10)
+
+        String sql = StringUtils.joinStr(
+                "select strleft(CAST(create_time AS string), 10) as ", Key.CREATE_TIME,
+                ", count(distinct comp_id) as ", Key.TOTAL, " from ", Table.TRADE_COMPANY,
+                " where delete_flag = 0 and license_file is not null and ",
+                "(create_time between '", startDate, "' and '", endDate, "') ",
+                "group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+    public List<GroupByVo> getAuthUCert3HistoryBy(String platform) {
+        platform = dealPlatform(platform, LEN_4);
+
+        String sql = StringUtils.joinStr(
+                "select comp_category as ", Key.TYPE,
+                ", count(distinct comp_id) as ", Key.TOTAL, " from ", Table.TRADE_COMPANY,
+                " where delete_flag = 0 and valid_status = 2 group by comp_category");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+    public List<GroupByVo> getAuthULicPercPieBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        //select lic_type, count(DISTINCT id) from uc_company
+        //where create_time xx group by lic_type
+        String sql = StringUtils.joinStr(
+                "select lic_type as ", Key.TYPE, ", count(distinct id) as ",
+                Key.TOTAL, " from ", Table.UC_COMPANY,
+                " where (create_time between '", startDate, "' and '", endDate, "') ",
+                "group by lic_type");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+
+    public List<GroupByVo> getAuthUAreaDist(int topEle) {
+        String sql = StringUtils.joinStr(
+                "SELECT t.address_province as ", Key.TYPE, ", a.area_name as ", Key.TYPE_NAME, ", t.total as ", Key.TOTAL,
+                " FROM (SELECT address_province, count(DISTINCT c.comp_id) as ", Key.TOTAL,
+                " FROM ", Table.TRADE_COMPANY, " c WHERE c.valid_status = 2 GROUP BY c.address_province",
+                topEle > 0 ? StringUtils.joinStr(" order by ", Key.TOTAL, " desc limit 10") : "",
+                ") t LEFT JOIN ", Table.AREA, " a ON t.address_province = a.area_code");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+    /**
+     * 签章开通数的 TimeTotalVo
+     */
+    public List<TimeTotalVo> getVisaTTVsBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select strleft(CAST(create_time AS string), 10) as ", Key.CREATE_TIME,
+                ", count(DISTINCT comp_id) as ", Key.TOTAL, " from ", Table.TRADE_COMPANY,
+                " where signature_status = 1 and ",
+                "(create_time between '", startDate, "' and '", endDate, "') ",
+                " group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+    public List<TimeTotalVo> getPayTTVsBy(String platform, String startDate, String endDate) throws Exception {
+        platform = dealPlatform(platform, LEN_4);
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select strleft(CAST(create_time AS string), 10) as ", Key.CREATE_TIME,
+                ", count(DISTINCT comp_id) as ", Key.TOTAL, " from ", Table.TRADE_COMPANY,
+                " where pay_status = 1 and ",
+                "(create_time between '", startDate, "' and '", endDate, "') ",
+                " group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+
+    public List<VisaUAreaDist> getVisaUAreaDist(String startReviewTm, String endReviewTm) throws Exception {
+        startReviewTm = RegDateUtils.formatToFullF(RegDateUtils.parseStartWithFF(startReviewTm));
+        endReviewTm = RegDateUtils.formatToFullF(RegDateUtils.parseStartWithFF(endReviewTm));
+
+        String sql = StringUtils.joinStr(
+                "SELECT count(DISTINCT id) as total,country,area as areaCode FROM default.jmbi_trade_company ",
+                "WHERE delete_flag = 0 and signature_mark=1 AND (review_time between '", startReviewTm,
+                "' and '", endReviewTm, "') group by country,area");
+
+        return getVoList(sql, VisaUAreaDist.class);
+    }
+
+    public List<PayUAreaDist> getPayUAreaDist() {
+        String sql = "SELECT total, a.area_name as areaName,address_province as addressProvince " +
+                "FROM (SELECT address_province,count(DISTINCT comp_id) as total FROM " +
+                "default.jmbi_trade_company where delete_flag = 0 and pay_status=1 and address_province is not null " +
+                "GROUP BY address_province) t LEFT JOIN default.jmbi_area a on t.address_province = CAST(a.area_code AS BIGINT);";
+
+        return getVoList(sql, PayUAreaDist.class);
+    }
+
+
+
+
+}

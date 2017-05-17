@@ -1,0 +1,100 @@
+package org.jumao.bi.dao.trade.operate.impl;
+
+import org.jumao.bi.dao.trade.operate.IOperationOverviewDao;
+import org.jumao.bi.utis.PlatFormUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by Administrator on 2017/4/28.
+ */
+@Repository("operationOverviewDaoImpl")
+public class OperationOverviewDaoImpl implements IOperationOverviewDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public List<Map<String, Object>> getTopTotal(String platform, String nowDate) {
+        String platform_ = PlatFormUtil.getPlatformV(platform);
+        String SQL = "";
+        if (platform_ != null){
+            SQL = "select count(*) as nums from jmbi_uc_jumore_user  where platform = '" + platform + "' and create_time <= '"+nowDate+"' " +
+                    "union all " +
+                    "SELECT COUNT(*) as nums  FROM jmbi_trade_shop_operate WHERE delete_flag = 0 and operate_type=0  and  create_time <= '"+nowDate+"' " +
+                    "union all " +
+                    "select count(*) as nums  from  jmbi_trade_goods where industry_id= "+platform_+" AND delete_flag = 0 and  create_time <= '"+nowDate+"' " +
+                    "union all " +
+                    "select count(*) as nums  from jmbi_trade_order  where industry_id= "+platform_+"  AND delete_flag = 0 and order_state in(10,20,30,40,50,60,70) and create_time <= '"+nowDate+"' " +
+                    "union all " +
+                    "select count(*) as nums  from jmbi_ep_trade where industry_id= "+platform_+" AND  is_delete = 0 and  status in (2,3,4)  and  create_time <= '"+nowDate+"' " +
+                    "union all " +
+                    "select sum(pay_amt) as nums  from jmbi_ep_trade  where industry_id= "+platform_+" AND  is_delete = 0 and  status in (2,3,4)  and create_time <= '"+nowDate+"' ";
+        }else {
+            SQL = "select count(*) as nums from jmbi_uc_jumore_user  where platform = '" + platform + "' and create_time <= '"+nowDate+"' " +
+                "union all " +
+                "SELECT COUNT(*) as nums  FROM jmbi_trade_shop_operate WHERE delete_flag = 0 and operate_type=0  and  create_time <= '"+nowDate+"' " +
+                "union all " +
+                "select count(*) as nums  from  jmbi_trade_goods where delete_flag = 0 and  create_time <= '"+nowDate+"' " +
+                "union all " +
+                "select count(*) as nums  from jmbi_trade_order  where delete_flag = 0 and order_state in(10,20,30,40,50,60,70) and create_time <= '"+nowDate+"' " +
+                "union all " +
+                "select count(*) as nums  from jmbi_ep_trade where is_delete = 0 and  status in (2,3,4)  and  create_time <= '"+nowDate+"' " +
+                "union all " +
+                "select sum(pay_amt) as nums  from jmbi_ep_trade  where is_delete = 0 and  status in (2,3,4)  and create_time <= '"+nowDate+"' ";
+        }
+        return jdbcTemplate.queryForList(SQL);
+    }
+
+    public Map<String, String> getForMap(String SQL) {
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(SQL);
+        Map<String, String> resMap = new HashMap();
+        for (Map<String,Object> map : mapList){
+            String key = String.valueOf(map.get("time_"));
+            String val = String.valueOf(map.get("nums"));
+            resMap.put(key,val);
+        }
+        return resMap;
+    }
+
+    public List<Map<String, String>> getForListMap(String SQL) {
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(SQL);
+        Map<String, String> pv = new HashMap();
+        Map<String, String> uv = new HashMap();
+        Map<String, String> ips = new HashMap();
+        Map<String, String> ave = new HashMap();
+        Map<String, String> avg = new HashMap();
+
+        for (Map<String,Object> map : mapList){
+            String pvKey = String.valueOf(map.get("time_"));
+            String pvVal = String.valueOf(map.get("pv"));
+            pv.put(pvKey,pvVal);
+            String uvKey = String.valueOf(map.get("time_"));
+            String uvVal = String.valueOf(map.get("uv"));
+            uv.put(uvKey,uvVal);
+            String ipsKey = String.valueOf(map.get("time_"));
+            String ipsVal = String.valueOf(map.get("ips"));
+            ips.put(ipsKey,ipsVal);
+            String aveKey = String.valueOf(map.get("time_"));
+            String aveVal = String.valueOf(map.get("ave"));
+            ave.put(aveKey,aveVal);
+            String avgKey = String.valueOf(map.get("time_"));
+            String avgVal = String.valueOf(map.get("avg"));
+            avg.put(avgKey,avgVal);
+        }
+
+        List<Map<String, String>> resuList = new ArrayList();
+        resuList.add(pv);
+        resuList.add(uv);
+        resuList.add(ips);
+        resuList.add(ave);
+        resuList.add(avg);
+
+        return resuList;
+    }
+}

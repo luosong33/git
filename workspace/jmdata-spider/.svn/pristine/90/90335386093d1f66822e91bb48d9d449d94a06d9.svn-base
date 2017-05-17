@@ -1,0 +1,64 @@
+#
+# Log4J Settings for log4j 1.2.x (via jakarta-commons-logging)
+#
+# The five logging levels used by Log are (in order):
+#
+#   1. DEBUG (the least serious)
+#   2. INFO
+#   3. WARN
+#   4. ERROR
+#   5. FATAL (the most serious)
+
+###################################
+#CONSOLE #
+###################################
+# Set root logger level to WARN and append to stdout
+log4j.rootLogger=debug,stdout,info,debug,error,reqInterceptor
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=[%-5p] [%d{HH:mm:ss}] %c - %m%n
+ 
+log4j.logger.info=info
+log4j.appender.info=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.info.layout=org.apache.log4j.PatternLayout
+log4j.appender.info.layout.ConversionPattern=[%-5p]_[%d{yyyy-MM-dd HH:mm:ss,SSS}]_%c_%m%n
+log4j.appender.info.datePattern='.'yyyy-MM-dd
+log4j.appender.info.Threshold = INFO 
+log4j.appender.info.append=true
+log4j.appender.info.File=/myhome/logs/spider/info/info.log
+ 
+log4j.logger.debug=debug
+log4j.appender.debug=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.debug.layout=org.apache.log4j.PatternLayout
+log4j.appender.debug.layout.ConversionPattern=[%-5p] [%d{HH:mm:ss}] %c - %m%n
+log4j.appender.debug.datePattern='.'yyyy-MM-dd
+log4j.appender.debug.Threshold = DEBUG 
+log4j.appender.debug.append=true
+log4j.appender.debug.File=/myhome/logs/spider/debug/debug.log
+
+log4j.logger.error=error
+log4j.appender.error=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.error.layout=org.apache.log4j.PatternLayout
+log4j.appender.error.layout.ConversionPattern=[%-5p]_[%d{yyyy-MM-dd HH:mm:ss,SSS}]_%c_%m%n
+log4j.appender.error.datePattern='.'yyyy-MM-dd
+log4j.appender.error.Threshold = ERROR 
+log4j.appender.error.append=true
+log4j.appender.error.File=/myhome/logs/spider/error/error.log
+
+# reqInterceptor Stuff
+
+log4j.logger.org.jumao.commons.frameworks.jmframework.interceptors.RequestInterceptor=reqInterceptor
+log4j.appender.reqInterceptor=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.reqInterceptor.layout=org.apache.log4j.PatternLayout
+log4j.appender.reqInterceptor.Threshold = INFO
+log4j.appender.reqInterceptor.append=true
+log4j.appender.reqInterceptor.layout.ConversionPattern=%m
+log4j.appender.reqInterceptor.file=/myhome/logs/spider/do/do.log
+log4j.appender.reqInterceptor.DatePattern='-'yyyy-MM-dd'.log'
+
+#log4j.logger.org.zjenterprise.tinars.instantdata.socketrouteserver.MinaServerHandler=minaServerHandler
+#log4j.appender.minaServerHandler=org.apache.log4j.DailyRollingFileAppender
+#log4j.appender.minaServerHandler.layout=org.apache.log4j.PatternLayout
+#log4j.appender.minaServerHandler.layout.ConversionPattern=%m
+#log4j.appender.minaServerHandler.file=/myhome/logs/spider/mina/minahandler.log
+#log4j.appender.minaServerHandler.DatePattern='-'yyyy-MM-dd'.log'

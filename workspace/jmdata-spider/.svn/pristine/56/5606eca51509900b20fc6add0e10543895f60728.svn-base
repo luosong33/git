@@ -1,0 +1,131 @@
+#####################################\u516C\u5171\u5C5E\u6027#########################################
+#country=\u4E2D\u56FD
+#province=\u6D59\u6C5F
+#city=\u676D\u5DDE
+
+#####################################\u6570\u636E\u5E93\\u914D\u7F6E#########################################
+#CutListIndex
+#mCutListIndex=0 0 07 * * *
+#nCutListIndex=0 0 20 * * *
+#blackListIndex=0 59 23 * * *
+#appIndex=0 50 23 * * *
+
+###################################mail  #465 ###########################################
+mail.from=server_monitor@jumore.com
+mail.host=mail.jumore.com
+mail.password=jm6a*f0
+mail.smtp.port=25
+mail.smtp.auth=true
+mail.smtp.timeout=25000
+mail.username=server_monitor@jumore.com
+
+###################################beanMail###########################################
+beanMailfrom=server_monitor@jumore.com
+beanMailfromName=server_monitor@jumore.com
+beanMailtoEmails=server_monitor@jumore.com,huyumin@jumore.com
+
+###################################SMS###########################################
+smsMobile=15168466925
+smsTplCode=jumoreshuju-warning
+smsUrl=http://www.jlt.com/app/smsTemplate/doSendSms
+
+
+###################################BI SERVICE###########################################
+biservice.usertrace.url=http://jmbi-service.jm.com/biservice/v1/usertrace
+
+
+###################################ELASTIC SEARCH###########################################
+es.cluster.name=es-local
+es.ip=192.168.1.52
+es.port=9300
+es.size=2000
+
+
+###################################jobs timer ###########################################
+#SelectPriceIndustryJobscron=0/3 * * * * ?
+#SelectPriceRankJobscron=0/3 * * * * ?
+#Sci99ImpAndExpProcessorJobscron=0 23 * * * ? 
+
+
+
+###################################hadoop configuretion###########################################
+#zk.quorum=192.168.23.31,192.168.23.33,192.168.23.34
+#hd.mr=192.168.23.34:2181
+#zk.port=2181
+#zk.host=192.168.23.31,192.168.23.33,192.168.23.34
+#fs.defaultFS=hdfs://masters
+#fs.default.name=hdfs://192.168.23.31:9000
+#fs.default.names="hdfs://192.168.23.31:9000"
+#fs.default.nameha="hdfs://masters"
+#
+#wordcount.input.path=/myhome/usr/hadoop/data/input/
+#wordcount.output.path=/myhome/usr/hadoop/data/output/
+#delete-connection=true
+
+###################################hbase configuretion###########################################
+
+#hbase.master.info.bindAddress=192.168.3.130
+#ipc.client.connection.maxidletime=1000000
+
+
+
+################################mina  configuretion####################################
+#minaport=:188
+#minaport=:1030
+################################kafka  configuretion####################################
+#metadata.broker.list=192.168.23.140:9092,192.168.23.142:9092
+
+
+#####################################SPIDER HDFS configuation#########################################
+#hadoop location in common
+#prod env: hdfs://10.88.13.16:9000 
+#test env: hdfs://192.168.1.141:9000
+#CDH  test env:hdfs://172.18.203.112:8020
+hadoop_location=hdfs://192.168.1.141:9000
+
+cdh_hdfs_location=hdfs://172.18.203.111:8020
+
+#index hdfs file (huyumin)
+top_index_hdfs_file=/jmhdfs/jss/index/top/top_index.txt
+general_index_hdfs_file=/jmhdfs/jss/index/general/general_index.txt
+chemical_index_hdfs_file=/jmhdfs/jss/index/industry/chemical_index.txt
+coal_index_hdfs_file=/jmhdfs/jss/index/industry/coal_index.txt
+farm_index_hdfs_file=/jmhdfs/jss/index/industry/farm_index.txt
+metals_index_hdfs_file=/jmhdfs/jss/index/industry/metals_index.txt
+oil_index_hdfs_file=/jmhdfs/jss/index/industry/oil_index.txt
+steel_index_hdfs_file=/jmhdfs/jss/index/industry/steel_index.txt
+energy_index_hdfs_file=/jmhdfs/jss/index/industry/energy_index.txt
+
+#import and export data (wanglei)
+impandexp_index_hdfs_file=/jmhdfs/jss/export/ImpAndExp.txt
+
+#price hdfs file (liquan)
+price_rank_hdfs_file=/jmhdfs/jss/price/pricerank/pricerank.txt
+price_list_hdfs_file=/jmhdfs/jss/price/pricelist/pricelist.txt
+
+#future hdfs file (tangyikuang)
+trade_price_inzc_hdfs_file=/jmhdfs/jss/home/price/markprice/tradePriceInZc.txt
+change_list_inppi_hdfs_file=/jmhdfs/jss/home/price/changelist/changeListInPpi.txt
+price_exponent_inzc_hdfs_file=/jmhdfs/jss/home/gindex/priceExponentInZc.txt
+futures_inzc_hdfs_file=/jmhdfs/jss/home/comp/futuresInZc.txt
+future_datadaily_insqs_hdfs_file=/jmhdfs/jss/home/comp/futureDataDailyInSqs.txt
+future_datadaily_inzqs_hdfs_file=/jmhdfs/jss/home/comp/futureDataDailyInZqs.txt
+future_datadaily_indqs_hdfs_file=/jmhdfs/jss/home/comp/futureDataDailyInDqs.txt
+
+#home page hdfs file (heyapeng)
+home_jm_index_hdfs_file=/jmhdfs/jss/home/jm/index.txt
+home_gm_index_hdfs_file=/jmhdfs/jss/home/gm/index.txt
+home_jmi_index_hdfs_file=/jmhdfs/jss/home/jmi/index.txt
+home_price_index_hdfs_file=/jmhdfs/jss/home/price/index.txt
+home_price_markprice_index_hdfs_file=/jmhdfs/jss/home/price/markprice/index.txt
+home_auth_index_hdfs_file=/jmhdfs/jss/home/auth/index.txt
+home_comp_index_hdfs_file=/jmhdfs/jss/home/comp/index.txt
+
+#english version (tangyikuang)
+en_price_category_file=/jmhdfs/jss/english/price/price.txt
+en_commodity_price_index_file=/jmhdfs/jss/english/home/commodityPriceIndex.txt
+en_ccpi_file=/jmhdfs/jss/english/home/ccpi.txt
+en_tocom_spot_price_file =/jmhdfs/jss/english/home/tocomSpotPrice.txt
+en_mti_bulk_index_file =/jmhdfs/jss/english/home/MTIBulkIndex.txt
+en_spot_price_file =/jmhdfs/jss/english/price/spotPrice.txt
+en_futures_price_file =/jmhdfs/jss/english/price/futuresPrice.txt

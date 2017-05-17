@@ -1,0 +1,796 @@
+package org.jumao.bi.service.impl.trade.operate;
+
+import com.alibaba.fastjson.JSON;
+import org.apache.log4j.Logger;
+import org.jumao.bi.constant.ServiceConst;
+import org.jumao.bi.dao.trade.operate.IOperationOverviewDao;
+import org.jumao.bi.entites.ResponseResult;
+import org.jumao.bi.entites.trade.operate.*;
+import org.jumao.bi.service.trade.operate.IOperationSvc;
+import org.jumao.bi.utis.LogUtils;
+import org.jumao.bi.utis.MapUtil;
+import org.jumao.commons.frameworks.jmframework.commutil.CalendarUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.*;
+
+/**
+ * Created by Administrator on 2017/4/26.
+ */
+public class OperationSvcImpl implements IOperationSvc {
+
+    //    ImpalaJDBC impalaJDBC = new ImpalaJDBC();
+    @Autowired
+    private IOperationOverviewDao operationOverviewDao;
+    private Logger logger = Logger.getLogger(this.getClass());
+
+    /**
+     * 运营总览顶部6个统计图  http://localhost:8080/v1/operate/total
+     */
+    public String getTotal() {
+        String SQL = "select count(*) from jmbi_uc_jumore_user  where create_time <= \"2017-03-09 23:59:59\"\n" +
+                "union all\n" +
+                "SELECT COUNT(*) FROM jmbi_trade_shop_operate WHERE delete_flag = 0 and operate_type=0  and  create_time <= \"2017-03-09 23:59:59\"\n" +
+                "union all\n" +
+                "select count(*) from  jmbi_trade_goods where delete_flag = 0 and  create_time <= \"2017-03-09 23:59:59\"\n" +
+                "union all\n" +
+                "select count(*) from jmbi_trade_order  where delete_flag = 0 and order_state in(10,20,30,40,50,60,70) and create_time <= \"2017-03-09 23:59:59\"\n" +
+                "union all\n" +
+                "select count(*) from jmbi_ep_trade where is_delete = 0 and  status in (2,3,4)  and  create_time <= \"2017-03-09 23:59:59\"\n" +
+                "union all\n" +
+                "select sum(pay_amt) from jmbi_ep_trade  where is_delete = 0 and  status in (2,3,4)  and create_time <= \"2017-03-09 23:59:59\"";
+        List<Map<String, Object>> topTotal = operationOverviewDao.getTopTotal(SQL);
+        List<Map<String, Object>> topTotal_ = new ArrayList();
+
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            Object MemberTotal = topTotal.get(0).get("count(*)");
+            String MemberTotal_ = "";
+            if (MemberTotal != null) MemberTotal_ = MemberTotal.toString();
+            map.put("MemberTotal", MemberTotal_);
+            topTotal_.add(map);
+
+            Map<String, Object> map1 = new HashMap<String, Object>();
+            Object OpenStoreTotal = topTotal.get(1).get("count(*)");
+            String OpenStoreTotal_ = "";
+            if (OpenStoreTotal != null) OpenStoreTotal_ = OpenStoreTotal.toString();
+            map1.put("OpenStoreTotal", OpenStoreTotal_);
+            topTotal_.add(map1);
+
+            Map<String, Object> map2 = new HashMap<String, Object>();
+            Object ItemTotal = topTotal.get(2).get("count(*)");
+            String ItemTotal_ = "";
+            if (ItemTotal != null) ItemTotal_ = ItemTotal.toString();
+            map2.put("ItemTotal", ItemTotal_);
+            topTotal_.add(map2);
+
+            Map<String, Object> map3 = new HashMap<String, Object>();
+            Object OrderTotal = topTotal.get(3).get("count(*)");
+            String OrderTotal_ = "";
+            if (OrderTotal != null) OrderTotal_ = OrderTotal.toString();
+            map3.put("OrderTotal", OrderTotal_);
+            topTotal_.add(map3);
+
+            Map<String, Object> map4 = new HashMap<String, Object>();
+            Object PayTotal = topTotal.get(4).get("count(*)");
+            String PayTotal_ = "";
+            if (PayTotal != null) PayTotal_ = PayTotal.toString();
+            map4.put("PayTotal", PayTotal_);
+            topTotal_.add(map4);
+
+            Map<String, Object> map5 = new HashMap<String, Object>();
+            Object TranTotal = topTotal.get(5).get("count(*)");
+            String TranTotal_ = "";
+            if (TranTotal != null) TranTotal_ = TranTotal.toString();
+            map5.put("TranTotal", TranTotal_);
+            topTotal_.add(map5);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String jsonString = JSON.toJSONString(topTotal_);
+        return jsonString;
+    }
+
+
+    public Response getBasic(String startDate, String endDate) {
+        LogUtils.writeLogs(logger, "get getBasic for from " + startDate + " to " + endDate);
+        OperateCharts response = new OperateCharts();  //  服务返回总对象
+
+        List<String> dates;  //  获得x轴数据
+        try {
+            dates = CalendarUtils.getAllDatesByPeriod(startDate, endDate);
+        } catch (ParseException e) {  //  请求日期格式错误
+            response.setStatus(new ResponseResult(ServiceConst.INVADLID_REQUEST_CODE, e.getMessage()));
+            return Response.serverError().entity(response).build();
+        }
+        int size = dates.size();
+        String[] xAxisData = dates.toArray(new String[size]);
+
+        LineChart threeCard = getThreeCard(startDate, endDate, size, xAxisData);  //  查询并组装getThreeCard实体
+        LineChart openStoreTotal = getOpenStoreTotal(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+        LineChart itemTotal = getItemTotal(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+        LineChart orderTotal = getOrderTotal(startDate, endDate, size, xAxisData);  //  查询并组装订单数实体
+        LineChart payTotal = getPayTotal(startDate, endDate, size, xAxisData);  //  查询并组装付款笔数实体
+        LineChart tranTotal = getTranTotal(startDate, endDate, size, xAxisData);  //  查询并组装金额实体
+
+        //  组装返回体
+        response.setxAxisData(xAxisData);
+        response.setThreeCard(threeCard);
+        response.setOpenStoreTotal(openStoreTotal);
+        response.setItemTotal(itemTotal);
+        response.setOrderTotal(orderTotal);
+        response.setPayTotal(payTotal);
+        response.setTranTotal(tranTotal);
+        setPvUvIpAvetimeavgPagesExit(startDate, endDate, size, xAxisData, response);
+
+        response.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+        return Response.ok().entity(response).build();
+    }
+
+    public Response getBuyer(String startDate, String endDate) {
+        LogUtils.writeLogs(logger, "get getBasic for from " + startDate + " to " + endDate);
+        BuyerConvCharts response = new BuyerConvCharts();  //  服务返回总对象
+
+        List<String> dates;  //  获得x轴数据
+        try {
+            dates = CalendarUtils.getAllDatesByPeriod(startDate, endDate);
+        } catch (ParseException e) {  //  请求日期格式错误
+            response.setStatus(new ResponseResult(ServiceConst.INVADLID_REQUEST_CODE, e.getMessage()));
+            return Response.serverError().entity(response).build();
+        }
+        int size = dates.size();
+        String[] xAxisData = dates.toArray(new String[size]);
+
+        LineChart authConv = getAuthConv(startDate, endDate, size, xAxisData);  //  查询并组装认证转化率实体
+        LineChart releaseDemandConv = getReleaseDemandConv(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+        LineChart orderConv = getOrderConv(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+
+        //  组装返回体
+        response.setxAxisData(xAxisData);
+        response.setAuthConv(authConv);
+        response.setReleaseDemandConv(releaseDemandConv);
+        response.setOrderConv(orderConv);
+
+        response.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+        return Response.ok().entity(response).build();
+    }
+
+    public Response getSeller(String startDate, String endDate) {
+        LogUtils.writeLogs(logger, "get getSeller for from " + startDate + " to " + endDate);
+        SellerConvCharts response = new SellerConvCharts();  //  服务返回总对象
+
+        List<String> dates;  //  获得x轴数据
+        try {
+            dates = CalendarUtils.getAllDatesByPeriod(startDate, endDate);
+        } catch (ParseException e) {  //  请求日期格式错误
+            response.setStatus(new ResponseResult(ServiceConst.INVADLID_REQUEST_CODE, e.getMessage()));
+            return Response.serverError().entity(response).build();
+        }
+        int size = dates.size();
+        String[] xAxisData = dates.toArray(new String[size]);
+
+        LineChart sellerAuthConv = getSellerAuthConv(startDate, endDate, size, xAxisData);  //  查询并组装卖家认证转化率实体
+        LineChart openStoreConv = getOpenStoreConv(startDate, endDate, size, xAxisData);  //  查询并组装卖家店铺开通转化率实体
+        LineChart itemConv = getItemConv(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+        LineChart dealConv = getDealConv(startDate, endDate, size, xAxisData);  //  查询并组装开通店铺数实体
+
+        //  组装返回体
+        response.setxAxisData(xAxisData);
+        response.setAuthConv(sellerAuthConv);
+        response.setOpenStoreConv(openStoreConv);
+        response.setItemConv(itemConv);
+        response.setDealConv(dealConv);
+
+        response.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+        return Response.ok().entity(response).build();
+    }
+
+    public Response getTop(String startDate, String endDate) {
+        LogUtils.writeLogs(logger, "get getTop for from " + startDate + " to " + endDate);
+        TopCharts response = new TopCharts();  //  服务返回总对象
+
+        TopLineChart affiliateCompanyChart = getAffiliateCompanyChart(startDate, endDate);  //  查询并组装关联公司top5实体
+        TopLineChart subAccountOpening = getSubAccountOpeningChart(startDate, endDate);  //  查询并组装子账号开通top5实体
+
+        //  组装返回体
+        response.setAffiliateCompanyChart(affiliateCompanyChart);
+        response.setSubAccountOpening(subAccountOpening);
+
+
+        response.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+        return Response.ok().entity(response).build();
+    }
+
+    private TopLineChart getSubAccountOpeningChart(String startDate, String endDate) {
+        //  获得查询子账号开通top5 x、y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select company_name as time_ , count(DISTINCT user_id)  as nums   " +
+                "from jmbi_trade_center_user where delete_flag = 0 and user_kind<>3 and create_time between '2016-04-20' AND '2017-05-01'   " +
+                "and  company_id in (select company_id from jmbi_trade_center_user where user_kind=3)   " +
+                "group by company_id, company_name  order by nums desc  " +
+                "limit  5;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        map = MapUtil.sortByValueDesc(map);
+
+        //  组装 affiliateCompanyChart  查询关联公司top5行对象
+        TopLineChart subAccountOpeningChart = new TopLineChart();
+        subAccountOpeningChart.setTitle("子账号开通top5排名趋势");
+        subAccountOpeningChart.setSeriesName("子账号开通");
+        subAccountOpeningChart.setUnit("个");
+        return getTopY(map, subAccountOpeningChart);  //  封装行对象关联公司top5的x、y轴数据
+    }
+
+    private TopLineChart getAffiliateCompanyChart(String startDate, String endDate) {
+        //  获得查询关联公司top5 x、y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT c.comp_name as time_ , COUNT(DISTINCT s.sub_comp_id) as nums  " +
+                "FROM jmbi_trade_sub_comp s, jmbi_trade_company c  " +
+                "WHERE s.delete_flag = 0 and c.delete_flag = 0 and  c.create_time between '" + startDate + "' AND '" + endDate + "' " +
+                " AND c.comp_id=s.comp_id   GROUP BY c.comp_id, c.comp_name order by nums desc  " +
+                "limit  5;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        map = MapUtil.sortByValueDesc(map);
+
+        //  组装 affiliateCompanyChart  查询关联公司top5行对象
+        TopLineChart affiliateCompanyChart = new TopLineChart();
+        affiliateCompanyChart.setTitle("关联公司top5排名趋势");
+        affiliateCompanyChart.setSeriesName("关联公司");
+        affiliateCompanyChart.setUnit("个");
+        return getTopY(map, affiliateCompanyChart);  //  封装行对象关联公司top5的x、y轴数据
+    }
+
+    //  公用top5，x、y轴数据封装方法
+    private TopLineChart getTopY(Map<String, String> map, TopLineChart affiliateCompanyChart) {
+        BigDecimal[] xAxisData = new BigDecimal[5];  //  组装x轴数据
+        String[] seriesData = new String[5];  //  组装y轴数据
+
+        int i = 0;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (!entry.getKey().equals("null") && entry.getKey() != null) {
+                xAxisData[i] = new BigDecimal(entry.getValue());
+                seriesData[i] = entry.getKey();
+            } else {
+                xAxisData[i] = BigDecimal.ZERO;
+                seriesData[i] = "";
+            }
+            i++;
+        }
+
+        affiliateCompanyChart.setxAxisData(xAxisData);  //  x轴数据
+        affiliateCompanyChart.setSeriesData(seriesData);  //  y轴数据
+        return affiliateCompanyChart;
+    }
+
+    private LineChart getDealConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询卖家成交转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums  " +
+                "FROM jmbi_trade_goods g,jmbi_trade_company c,jmbi_trade_order o ,jmbi_trade_order_detail d WHERE  " +
+                "g.delete_flag = 0 and c.delete_flag = 0 and o.delete_flag = 0 and d.delete_flag = 0 and  " +
+                "   c.valid_status=2 AND c.shop_status=1  " +
+                "  AND o.order_id=d.order_id   " +
+                "  AND d.goods_id=g.goods_id " +
+                "  AND g.company_id=c.comp_id " +
+                "  AND o.order_state IN (20,30,40,50,70) " +
+                "AND c.create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询卖家成交转化率y轴分母数据
+
+        String SQL_ = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums   " +
+                " FROM jmbi_trade_goods g,jmbi_trade_company c  " +
+                "WHERE g.delete_flag = 0 and c.delete_flag = 0 and g.company_id=c.comp_id AND c.valid_status=2 AND c.shop_status=1  " +
+                "AND c.create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 dealConv  查询成交转化率行对象
+        LineChart dealConv = new LineChart();
+        dealConv.setTitle("成交转化率趋势情况");
+        dealConv.setSeriesName("成交转化率");
+        dealConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, dealConv);
+    }
+
+    private LineChart getItemConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询卖家发布商品转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums  " +
+                "FROM jmbi_trade_goods g,jmbi_trade_company c  " +
+                "WHERE  c.delete_flag = 0 and g.delete_flag = 0 and g.company_id=c.comp_id  " +
+                "AND c.valid_status=2  " +
+                "AND c.shop_status=1 AND c.create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询卖家发布商品转化率y轴分母数据
+
+        String SQL_ = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums  " +
+                "FROM jmbi_trade_company c " +
+                "WHERE c.delete_flag = 0 and  c.shop_status=1 AND c.valid_status=2 AND  c.create_time between '2017-04-20' AND '2017-05-01'   " +
+                "group by time_ order by time_;";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 openStoreConv  查询发布商品转化率行对象
+        LineChart openStoreConv = new LineChart();
+        openStoreConv.setTitle("发布商品转化率趋势情况");
+        openStoreConv.setSeriesName("发布商品转化率");
+        openStoreConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, openStoreConv);
+    }
+
+    private LineChart getOpenStoreConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询卖家店铺开通转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums FROM jmbi_trade_company c  " +
+                "WHERE delete_flag = 0 and c.shop_status=1 AND c.valid_status=2 AND create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询卖家店铺开通转化率y轴分母数据
+
+        String SQL_ = "select STRLEFT(cast(create_time as string), 10) AS time_,count( DISTINCT c.comp_id) as nums from jmbi_trade_company c " +
+                "where delete_flag = 0 and c.valid_status=2 and create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 openStoreConv  查询店铺开通转化率行对象
+        LineChart openStoreConv = new LineChart();
+        openStoreConv.setTitle("店铺开通转化率趋势情况");
+        openStoreConv.setSeriesName("店铺开通转化率");
+        openStoreConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, openStoreConv);
+    }
+
+    private LineChart getSellerAuthConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询卖家认证转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(create_time as string), 10) AS time_, count( DISTINCT c.comp_id)  as nums   from jmbi_trade_company c  " +
+                "where delete_flag = 0  and  c.valid_status=2 and create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_; ";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询认证转化率y轴分母数据
+
+        String SQL_ = "SELECT STRLEFT(cast(create_time as string), 10) AS time_, count( DISTINCT c.comp_id) as nums  FROM jmbi_trade_company c  " +
+                "WHERE delete_flag = 0  and create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_; ";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 authConv  查询认证转化率行对象
+        LineChart sellerAuthConv = new LineChart();
+        sellerAuthConv.setTitle("认证转化率趋势情况");
+        sellerAuthConv.setSeriesName("认证转化率");
+        sellerAuthConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, sellerAuthConv);
+    }
+
+    private LineChart getOrderConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询下单转化率y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_, COUNT( DISTINCT c.comp_id)  as nums  " +
+                "FROM   jmbi_trade_order t, jmbi_trade_company c, jmbi_trade_center_user u, jmbi_trade_demand_main m " +
+                "WHERE t.order_state IN (20, 30, 40, 50, 70) " +
+                "and t.delete_flag = 0  and c.delete_flag = 0  and u.delete_flag = 0  and m.delete_flag = 0 " +
+                "AND t.member_id = u.user_id AND c.comp_id = u.company_id and c.valid_status=2 and m.company_id=c.comp_id and m.demand_code=1 " +
+                "and c.create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询下单转化率y轴分母数据
+
+        String SQL_ = "select STRLEFT(cast(m.create_time as string), 10) AS time_, COUNT( DISTINCT m.company_id)  as nums  " +
+                "from jmbi_trade_demand_main m  where m.demand_code=1 " +
+                "and m.delete_flag = 0  and m.company_id in  " +
+                "(select DISTINCT comp_id from jmbi_trade_company WHERE " +
+                "valid_status=2 and delete_flag = 0  and  create_time between '" + startDate + "' AND '" + endDate + "') " +
+                "group by time_ order by time_; ";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 orderConv  查询下单转化率行对象
+        LineChart orderConv = new LineChart();
+        orderConv.setTitle("下单转化率趋势情况");
+        orderConv.setSeriesName("下单转化率");
+        orderConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, orderConv);
+    }
+
+    private LineChart getReleaseDemandConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询发布需求转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_, COUNT( DISTINCT c.comp_id)  as nums " +
+                "FROM jmbi_trade_demand_main m, jmbi_trade_company c " +
+                "where m.delete_flag = 0 and c.delete_flag = 0 and  c.valid_status=2 and c.create_time between '" + startDate + "' AND '" + endDate + "' and m.demand_code=1 and m.company_id=c.comp_id " +
+                "group by time_  order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询发布需求转化率y轴分母数据
+
+        String SQL_ = "select STRLEFT(cast(c.create_time as string), 10) AS time_, COUNT( DISTINCT c.comp_id)  as nums from jmbi_trade_company c " +
+                "where delete_flag = 0 and valid_status=2 and create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "group by time_  order by time_;";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 releaseDemandConv  查询发布需求转化率行对象
+        LineChart releaseDemandConv = new LineChart();
+        releaseDemandConv.setTitle("发布需求转化率趋势情况");
+        releaseDemandConv.setSeriesName("发布需求转化率");
+        releaseDemandConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, releaseDemandConv);
+    }
+
+    private LineChart getAuthConv(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询认证转化率y轴分子数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_, COUNT( DISTINCT c.comp_id)  as nums " +
+                "FROM jmbi_trade_company c WHERE c.delete_flag = 0 and c.valid_status=2 AND create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "GROUP BY time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+        //  获得查询认证转化率y轴分母数据
+
+        String SQL_ = "SELECT STRLEFT(cast(c.create_time as string), 10) AS time_,COUNT( DISTINCT c.comp_id) as nums " +
+                "FROM jmbi_trade_company c  WHERE c.delete_flag = 0 and create_time between '" + startDate + "' AND '" + endDate + "' " +
+                "GROUP BY time_ order by time_;";
+        Map<String, String> map_ = operationOverviewDao.getForMap(SQL_);
+
+        //  组装 authConv  查询认证转化率行对象
+        LineChart authConv = new LineChart();
+        authConv.setTitle("认证转化率趋势情况");
+        authConv.setSeriesName("认证转化率");
+        authConv.setUnit("%");
+        return getConv(size, xAxisData, map, map_, authConv);
+    }
+
+
+    /**
+     * 封装通用转换率y轴数据，返回设置到行对象中
+     *
+     * @param size
+     * @param xAxisData
+     * @param map
+     * @param map_
+     * @param lineChart
+     * @return
+     */
+    private LineChart getConv(int size, String[] xAxisData, Map<String, String> map, Map<String, String> map_, LineChart lineChart) {
+        BigDecimal[] seriesData = new BigDecimal[size];
+        int i = 0;
+        for (String x : xAxisData) {
+            x = x.substring(0, 4) + "-" + x.substring(4, 6) + "-" + x.substring(6, 8);
+            BigDecimal member = new BigDecimal("0");  //  分子
+            BigDecimal denomin = new BigDecimal("1");  //  分母
+            Double authConvInt = Double.valueOf(0);  //  转化率
+            if (map.containsKey(x) && map.get(x) != null && !map.get(x).equals("")) {
+                member = new BigDecimal(Double.valueOf(map.get(x)));
+            } else {
+                seriesData[i] = BigDecimal.ZERO;
+                i++;
+                continue;
+            }
+            if (map_.containsKey(x) && map_.get(x) != null && !map_.get(x).equals("")) {
+                denomin = new BigDecimal(Double.valueOf(map_.get(x)));
+            }
+            authConvInt = member.divide(denomin, 4, BigDecimal.ROUND_HALF_UP).doubleValue();  //  BigDecimal计算
+            String s = String.valueOf(authConvInt * 100);  //  转化为百分比
+            if (s.length() > 5) {  //  保留两位小数
+                s = String.valueOf(s).substring(0, 5);
+            }
+            seriesData[i] = new BigDecimal(s);
+            i++;
+        }
+        lineChart.setSeriesData(seriesData);  //  y轴数据
+        return lineChart;
+    }
+
+    /**
+     * 查询并组装三证审核实体
+     */
+    private LineChart getThreeCard(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询三证审核y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,count(s.create_time) as nums " +
+                "from  jmbi_uc_company s  where  delete_flag = 0 and  create_time between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装 threeCard  查询三证审核行对象
+        LineChart threeCard = new LineChart();
+        threeCard.setTitle("三证审核趋势情况");
+        threeCard.setSeriesName("三证审核");
+        threeCard.setUnit("个");
+        return getBasicSeri(size, xAxisData, map, threeCard);
+    }
+
+    private LineChart getBasicSeri(int size, String[] xAxisData, Map<String, String> map, LineChart threeCard) {
+        BigDecimal[] seriesData = new BigDecimal[size];
+        int i = 0;
+        for (String x : xAxisData) {
+            x = x.substring(0, 4) + "-" + x.substring(4, 6) + "-" + x.substring(6, 8);
+            if (map.containsKey(x) && !map.get(x).equals("--") && map.get(x) != null) {
+                seriesData[i] = new BigDecimal(map.get(x));
+            } else {
+                seriesData[i] = BigDecimal.ZERO;
+            }
+            i++;
+        }
+        threeCard.setSeriesData(seriesData);  //  y轴数据
+        return threeCard;
+    }
+
+    /**
+     * 查询并组装开通店铺数实体
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @param size      x轴长度
+     * @param xAxisData x轴数据
+     * @return 开通店铺数实体
+     */
+    private LineChart getOpenStoreTotal(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得开通店铺数y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,count(s.create_time) as nums " +
+                "from  jmbi_trade_shop_operate s  where delete_flag = 0 and create_time between '" + startDate + "' and  '" + endDate + "'  " +
+                "group by  time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装OpenStoreTotal  开通店铺数行对象
+        LineChart openStoreTotal = new LineChart();
+        openStoreTotal.setTitle("开通店铺数趋势情况");
+        openStoreTotal.setSeriesName("开通店铺数");
+        openStoreTotal.setUnit("个");
+        return getBasicSeri(size, xAxisData, map, openStoreTotal);
+    }
+
+    /**
+     * 查询并组装发布商品数实体
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @param size      x轴长度
+     * @param xAxisData x轴数据
+     * @return 发布商品数实体
+     */
+    private LineChart getItemTotal(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得发布商品数y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,count(s.create_time) as nums  from  " +
+                "jmbi_trade_goods s  where delete_flag = 0 and create_time between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装ItemTotal  发布商品数行对象
+        LineChart ItemTotal = new LineChart();
+        ItemTotal.setTitle("发布商品数趋势情况");
+        ItemTotal.setSeriesName("发布商品数");
+        ItemTotal.setUnit("件");
+        return getBasicSeri(size, xAxisData, map, ItemTotal);
+    }
+
+    /**
+     * 查询并组装查询订单数实体
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @param size      x轴长度
+     * @param xAxisData x轴数据
+     * @return 订单数实体
+     */
+    private LineChart getOrderTotal(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询订单数y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,count(s.create_time) as nums  from  " +
+                "jmbi_trade_order s  where delete_flag = 0 and create_time between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装orderTotal  查询订单数行对象
+        LineChart orderTotal = new LineChart();
+        orderTotal.setTitle("订单数趋势情况");
+        orderTotal.setSeriesName("订单数");
+        orderTotal.setUnit("笔");
+        return getBasicSeri(size, xAxisData, map, orderTotal);
+    }
+
+    /**
+     * 查询并组装查询付款笔数实体
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @param size      x轴长度
+     * @param xAxisData x轴数据
+     * @return 付款笔数实体
+     */
+    private LineChart getPayTotal(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询付款笔数y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,count(s.create_time) as nums  from  " +
+                "jmbi_ep_trade s  where is_delete = 0 and status in (0,1,2,3,4) and  create_time between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装payTotal  付款笔数行对象
+        LineChart payTotal = new LineChart();
+        payTotal.setTitle("付款笔数趋势情况");
+        payTotal.setSeriesName("付款笔数");
+        payTotal.setUnit("笔");
+        return getBasicSeri(size, xAxisData, map, payTotal);
+    }
+
+    /**
+     * 查询并组装查询金额实体
+     *
+     * @param startDate 开始日期
+     * @param endDate   结束日期
+     * @param size      x轴长度
+     * @param xAxisData x轴数据
+     * @return 金额实体
+     */
+    private LineChart getTranTotal(String startDate, String endDate, int size, String[] xAxisData) {
+        //  获得查询金额y轴数据
+        startDate = startDate.substring(0, 4) + "-" + startDate.substring(4, 6) + "-" + startDate.substring(6, 8);
+        endDate = endDate.substring(0, 4) + "-" + endDate.substring(4, 6) + "-" + endDate.substring(6, 8);
+        String SQL = "select STRLEFT(cast(s.create_time as string), 10) as time_,sum(pay_amt) as nums " +
+                "from  jmbi_ep_trade s  where  is_delete = 0 and status in (0,1,2,3,4) and create_time between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_;";
+        Map<String, String> map = operationOverviewDao.getForMap(SQL);
+
+        //  组装tranTotal  查询金额行对象
+        LineChart tranTotal = new LineChart();
+        tranTotal.setTitle("金额趋势情况");
+        tranTotal.setSeriesName("金额");
+        tranTotal.setUnit("元");
+        return getBasicSeri(size, xAxisData, map, tranTotal);
+    }
+
+    /**
+     * 查询并设置浏览量等指标到返回体中
+     *
+     * @return
+     */
+    private Map<String, Object> setPvUvIpAvetimeavgPagesExit(String startDate, String endDate, int size, String[] xAxisData, OperateCharts response) {
+        //  获得查询浏览量y轴数据
+        String SQL = "select createdate as time_,sum(cast(b.pv as int)) as pv,sum(cast(b.uv as int))as uv,sum(cast(b.ips as int)) as ips," +
+                "sum(cast(b.staytime as int))as ave,sum(cast(b.avgvisitpages as decimal(10,2)\t)) as avg " +
+                "from jmbi_baidu_daily_stat b where b.createdate between '" + startDate + "' and  '" + endDate + "' " +
+                "group by  time_ order by time_;";
+        List<Map<String, String>> listMap = operationOverviewDao.getForListMap(SQL);
+
+        LineChart pv = getPv(size, xAxisData, listMap);
+        LineChart uv = getUv(size, xAxisData, listMap);
+        LineChart ips = getIps(size, xAxisData, listMap);
+        LineChart ave = getAve(size, xAxisData, listMap);
+        LineChart avg = getAvg(size, xAxisData, listMap);
+        LineChart exit = getExit(startDate, endDate, size, xAxisData);
+        response.setPv(pv);
+        response.setUv(uv);
+        response.setIps(ips);
+        response.setAve(ave);
+        response.setAvg(avg);
+        response.setExit(exit);
+
+        Map<String, Object> resuMap = new HashMap<String, Object>();
+        return resuMap;
+    }
+
+    private LineChart getExit(String startDate, String endDate, int size, String[] xAxisData) {
+        String SQL = "select createdate as time_,exits as nums " +
+                "from jmbi_baidu_daily_stat b where b.createdate between '" + startDate + "' and  '" + endDate + "' ";
+        Map<String, String> exitMap = operationOverviewDao.getForMap(SQL);
+        //  组装 exit  跳出率行对象
+        LineChart exit = new LineChart();
+        exit.setTitle("跳出率趋势情况");
+        exit.setSeriesName("跳出率");
+        exit.setUnit("%");
+        BigDecimal[] seriesData = new BigDecimal[size];  //  组装y轴数据，首先根据x轴作为key取值，如果没有值给0
+        int i = 0;
+        for (String x : xAxisData) {
+
+            if (exitMap.containsKey(x) && !exitMap.get(x).equals("--") && exitMap.get(x) != null) {
+                seriesData[i] = new BigDecimal(exitMap.get(x));
+            } else {
+                seriesData[i] = BigDecimal.ZERO;
+            }
+            i++;
+        }
+        exit.setSeriesData(seriesData);  //  y轴数据
+        return exit;
+    }
+
+    private LineChart getAvg(int size, String[] xAxisData, List<Map<String, String>> listMap) {
+        //  组装 avg  平均访问页数行对象
+        LineChart avg = new LineChart();
+        avg.setTitle("平均访问页数趋势情况");
+        avg.setSeriesName("平均访问页数");
+        avg.setUnit("次");
+        Map<String, String> avgMap = listMap.get(4);
+        return getBasicSeriPvUv(size, xAxisData, avg, avgMap);
+    }
+
+    //  pv、uv等12个基本指标的公用y轴数据封装方法
+    private LineChart getBasicSeriPvUv(int size, String[] xAxisData, LineChart avg, Map<String, String> avgMap) {
+        BigDecimal[] seriesData = new BigDecimal[size];  //  组装y轴数据，首先根据x轴作为key取值，如果没有值给0
+        int i = 0;
+        for (String x : xAxisData) {
+
+            if (avgMap.containsKey(x) && !avgMap.get(x).equals("null") && avgMap.get(x) != null) {
+                seriesData[i] = new BigDecimal(avgMap.get(x));
+            } else {
+                seriesData[i] = BigDecimal.ZERO;
+            }
+            i++;
+        }
+        avg.setSeriesData(seriesData);  //  y轴数据
+        return avg;
+    }
+
+    private LineChart getAve(int size, String[] xAxisData, List<Map<String, String>> listMap) {
+        //  组装 ave  平均停留时长行对象
+        LineChart ave = new LineChart();
+        ave.setTitle("平均停留时长趋势情况");
+        ave.setSeriesName("平均停留时长");
+        ave.setUnit("秒");
+        Map<String, String> map = listMap.get(3);
+        return getBasicSeriPvUv(size, xAxisData, ave, map);
+    }
+
+    private LineChart getIps(int size, String[] xAxisData, List<Map<String, String>> listMap) {
+        //  组装 ips  查询访问ip数行对象
+        LineChart ips = new LineChart();
+        ips.setTitle("访问ip数趋势情况");
+        ips.setSeriesName("访问ip数");
+        ips.setUnit("个");
+        Map<String, String> map = listMap.get(2);
+        return getBasicSeriPvUv(size, xAxisData, ips, map);
+    }
+
+    private LineChart getUv(int size, String[] xAxisData, List<Map<String, String>> listMap) {
+        //  组装 uv  查询独立访客行对象
+        LineChart uv = new LineChart();
+        uv.setTitle("访客数UV趋势情况");
+        uv.setSeriesName("访客数UV");
+        uv.setUnit("个");
+        int i = 0;
+        Map<String, String> map = listMap.get(1);
+        return getBasicSeriPvUv(size, xAxisData, uv, map);
+    }
+
+    private LineChart getPv(int size, String[] xAxisData, List<Map<String, String>> listMap) {
+        //  组装 pv  查询浏览量行对象
+        LineChart pv = new LineChart();
+        pv.setTitle("浏览量PV趋势情况");
+        pv.setSeriesName("浏览量PV");
+        pv.setUnit("次");
+        Map<String, String> map = listMap.get(0);
+        return getBasicSeriPvUv(size, xAxisData, pv, map);
+    }
+
+
+    /**
+     * 根据时间查询金额
+     */
+    public String getTranTotal(String startTime, String endTime) {
+        String SQL = "select sum(pay_amt) from jmbi_ep_trade  where status in (2,3,4)  and create_time >= \"" + startTime + "\" and create_time <= \"" + endTime + "\"";
+        List<Map<String, Object>> topTotal = operationOverviewDao.getTopTotal(SQL);
+        Map<String, Object> map = new HashMap();
+        map.put("TranTotal", topTotal);
+        String jsonString = JSON.toJSONString(map);
+        return jsonString;
+    }
+
+
+}

@@ -9,6 +9,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,21 @@ public class ImpalaJDBCDAO {
 
 
     public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/applicationContext-bigdata.xml");
+        /*ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/applicationContext-bigdata.xml");
         ImpalaJDBCDAO impalaJDBCDAO = ctx.getBean(ImpalaJDBCDAO.class);
         impalaJDBCDAO.getTotal();
 
-        System.out.println();
+        System.out.println();*/
+
+        /*BigDecimal member = new BigDecimal("4");  //  分子
+        BigDecimal denomin = new BigDecimal("26");
+        Double authConvInt = member.divide(denomin, 4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double v = authConvInt * 100;*/
+        String platform_ = PlatFormUtil.getPlatformV("1020");
+        if (platform_ == null) {
+            System.out.println("123");
+        }
+
     }
 
 }

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd"
+       default-autowire="byName"
+       default-lazy-init="true">
+
+    <!-- 自动加载构建bean,扫描包，应用Spring的注解 -->
+    <context:component-scan base-package="org.jumao"></context:component-scan>
+
+    <bean id="configProperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:properties/init.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="false"/>
+        <property name="properties" ref="configProperties"/>
+    </bean>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <aop:config>
+        <aop:pointcut id="allManagerMethod" expression="execution(* org.jumao.jobs..*(..))"/>
+    </aop:config>
+
+    <!-- 定时器开关 -->
+    <task:executor id="executor" pool-size="10"/>
+    <task:scheduler id="scheduler" pool-size="10"/>
+    <task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true"/>
+
+    <!-- 定时器业务 -->
+    <task:scheduled-tasks>
+      	<task:scheduled ref="elasticsearchjobs" method="exportUserLoginData" cron="0 0/15 * * * ?"/>
+        <task:scheduled ref="baidudataexportjobs" method="exportBaiduData" cron="0 0 2 * * ?" />
+        <task:scheduled ref="englishspiderjobs" method="spiderCategoryPrice" cron="0 5 1,7,12,15 * * ?"/>
+        <task:scheduled ref="englishspiderjobs" method="spiderMTIBulkIndex" cron="0 8 1,7,12,15 * * ?"/>
+        <task:scheduled ref="englishspiderjobs" method="spiderFuturesPrice" cron="0 6 1,7,12,15 * * ?"/>
+        <task:scheduled ref="englishspiderjobs" method="spiderSpotPrice" cron="0 7 1,7,12,15 * * ?"/>
+        <task:scheduled ref="englishspiderjobs" method="spiderCCPI" cron="0 9 7,9,10,12,15 * * ?"/>      
+        <task:scheduled ref="englishspiderjobs" method="spiderCommodityPriceIndex" cron="0 9 8,10,13,15,17,21 * * ?"/>
+        <task:scheduled ref="englishspiderjobs" method="spiderTocomSpotPrice" cron="0 58 7-15,17,19 * * ?"/>
+        <task:scheduled ref="indexspiderjobs" method="spiderGeneralIndex" cron="0 0 22 * * ?"/>
+        <task:scheduled ref="indexspiderjobs" method="spiderTopIndex" cron="0 0 8,10,13,15,17,21 * * ?"/>
+        <task:scheduled ref="indexspiderjobs" method="spiderIndustryIndex" cron="0 2 15,23 * * ?"/>
+        <task:scheduled ref="iespiderjobs" method="spiderSci99ImpAndExpProcessorJobs" cron="0 0 21 * * ?"/>
+        <task:scheduled ref="otherspiderjobs" method="spiderTradePriceJobs" cron="0 1 0,8,10,13,15 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderPriceExponentJobs" cron="0 2 0,16 * * ?"/>
+        <task:scheduled ref="otherspiderjobs" method="spiderFuturesJobs" cron="0 3 0,8 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderFuturesInSHFEJobs" cron="0 4 0,8 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderFuturesInCZCEJobs" cron="0 5 0,8 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderFuturesInDCEJobs" cron="0 6 0,8 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderChangeListJobs" cron="0 30 17,19,23 * * ? "/>
+        <task:scheduled ref="otherspiderjobs" method="spiderHomeSpiderJobs" cron="0 35 8,10,12,14,16,18,23 * * ?"/>
+        <task:scheduled ref="pricespiderjobs" method="spiderSelectPriceIndustryJobs" cron="0 9 7,10,15 * * ?"/>
+        <task:scheduled ref="pricespiderjobs" method="spiderSelectPriceRankJobs" cron="0 35 1,7,10 * * ?"/> 
+    </task:scheduled-tasks>
+
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from">
+            <value>${mail.from}</value>
+        </property>
+        <!-- 查看SimpleMailMessage源码还可以注入标题,内容等 -->
+    </bean>
+
+    <!-- 邮件发送器 163、126  -->
+
+    <!--
+     mail.host=smtp.exmail.qq.com(建议使用这个，如果使用smtp.qq.com可能会出现安全认证的问题
+     mail.username=你的邮箱名
+     mail.password=你的邮箱密码
+     mail.from=发送方的邮箱
+     -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="host" value="${mail.host}"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="port" value="${mail.smtp.port}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+                <prop key="mail.debug">${mail.smtp.auth}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--  邮件发送器 gmail
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="host" value="${mail.host}" />
+        <property name="username" value="${mail.username}" />
+        <property name="password" value="${mail.password}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+                <prop key="mail.smtp.port">465</prop>
+                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+            </props>
+        </property>
+    </bean>
+    -->
+
+    <bean id="velocityEngine"
+          class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    </bean>
+
+    <bean id="mailSenderServiceImpl" class="org.jumao.mails.service.impl.MailSenderServiceImpl">
+        <property name="javaMailSender" ref="mailSender"></property>
+        <property name="velocityEngine" ref="velocityEngine"></property>
+    </bean>
+
+</beans>

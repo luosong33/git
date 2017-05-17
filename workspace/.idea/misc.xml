@@ -2,6 +2,7 @@
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/dcpp/dcpp-portal" />
+    <file type="web" url="file://$PROJECT_DIR$/jmbi/trunk/jmbi-web" />
     <file type="web" url="file://$PROJECT_DIR$/jmdata-biservice" />
   </component>
   <component name="MavenProjectsManager">
@@ -9,6 +10,7 @@
       <list>
         <option value="$PROJECT_DIR$/dcpp/pom.xml" />
         <option value="$PROJECT_DIR$/jmdata-biservice/pom.xml" />
+        <option value="$PROJECT_DIR$/jmbi/trunk/jmbi-web/pom.xml" />
       </list>
     </option>
   </component>

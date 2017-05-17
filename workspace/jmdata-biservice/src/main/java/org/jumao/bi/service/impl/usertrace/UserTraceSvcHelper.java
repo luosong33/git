@@ -1,0 +1,65 @@
+package org.jumao.bi.service.impl.usertrace;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.jumao.bi.entites.charts.CommonBean;
+import org.jumao.bi.entites.charts.LineChart;
+import org.jumao.bi.entites.charts.PieChart;
+import org.jumao.bi.entites.usertrace.BrowseBean;
+import org.jumao.bi.entites.usertrace.BrowseResponse;
+import org.jumao.bi.entites.usertrace.LoginBean;
+import org.jumao.bi.entites.usertrace.LoginResponse;
+
+public class UserTraceSvcHelper {
+
+    public static void buildLoginLineChart(List<String> dates, List<LoginBean> logins, LoginResponse response) {
+
+        int size = dates.size();
+        String[] xAxisData = (String[]) dates.toArray(new String[size]);
+        LineChart lineChart = new LineChart();
+        lineChart.setxAxisData(xAxisData);
+        Map<String , Integer> loginMap = new HashMap<String,  Integer>();
+        for (LoginBean login : logins) {
+            loginMap.put(login.getLogin(), login.getNums());
+        }
+        
+        int[] seriesData = new int[size];
+        for (int i = 0; i < size; i++) {
+            String dateStr = xAxisData[i];
+            if(loginMap.containsKey(dateStr)) {
+                seriesData[i] = loginMap.get(dateStr);
+            }
+        }
+        
+        List<int[]> data = new ArrayList<int[]>(); 
+        data.add(seriesData);
+        lineChart.setSeriesData(data);
+        
+        response.setLineChart(lineChart);
+    }
+
+    public static void buildBrowserPieChart(List<BrowseBean> browses, BrowseResponse response) {
+        PieChart pieChart = new PieChart();
+        List<CommonBean> seriesData = new ArrayList<CommonBean>();
+        String[] legendData = new String[browses.size()];
+        int i = 0;
+        for (BrowseBean browse : browses) {
+
+            String browseType = browse.getBrowseType();
+            Integer nums = browse.getNums();
+            CommonBean commonBean = new CommonBean(browseType, nums.toString());
+            seriesData.add(commonBean);
+            legendData[i] = browseType;
+            i++;
+        }
+
+        pieChart.setSeriesData(seriesData);
+        pieChart.setLegendData(legendData);
+        
+        response.setPieChart(pieChart);
+    }
+
+}

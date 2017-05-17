@@ -1,0 +1,5 @@
+35 2 * * * root sh /d1/2-35indexiemrs.sh
+35 0,8 * * * root sh /d1/0,8-35futuresmrs.sh
+45 1,7,10 * * * root sh /d1/1,7,10-45pricemrs.sh
+0 */4 * * * root sh /d1/4homemrs.sh
+0 */2 * * * root sh /d1/2topmrs.sh

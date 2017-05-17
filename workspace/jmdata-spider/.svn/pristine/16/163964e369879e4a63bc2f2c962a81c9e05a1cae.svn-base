@@ -1,0 +1,99 @@
+jmdata-spider 说明 
+0.war发布
+
+1、开源 整合：spring core + spring aop + spring mail + spring timer +spring aspectj +maven
+1 java代码说明
+		org.jumao
+		org.jumao.aops  --- aop + aspectj 异常拦截
+		org.jumao.jobs --- timer interface
+		org.jumao.jobs.impl --- timer impl jar包依赖后调用方法来实现,
+		org.jumao.mails --- mail   报警方式
+		org.jumao.spider --- spider  
+		org.jumao.spider.utils --- spider 工具包  
+2.resource
+		context	
+		properties
+			init.properties
+			修改以下内容：
+			不能修改=可相应修改
+################################### mail#################################
+#####    qq ssl开启      ###  
+mail.from=120@qq.com
+mail.host=smtp.qq.com
+mail.password=###
+mail.smtp.auth=true
+mail.smtp.timeout=2500000
+mail.username=120@qq.com
+###################################mail###########################################
+mail.from=test@126.com
+mail.host=smtp.126.com
+mail.password=test
+mail.smtp.port=25
+mail.smtp.auth=true
+mail.smtp.timeout=25000
+mail.username=test@126.com
+
+###################################beanMail###########################################
+beanMailfrom=test@126.com
+beanMailfromName=test@126.com
+beanMailtoEmails=test@126.com			
+			
+webapp/WEB-INF
+		web.xml
+		
+		
+		
+时间的配置如下：
+
+时间大小由小到大排列，从秒开始，顺序为 秒，分，时，天，月，年    *为任意 ？为无限制。
+
+
+具体时间设定可参考
+
+字段 允许值 允许的特殊字符  
+秒 0-59 , - * /  
+分 0-59 , - * /  
+小时 0-23 , - * /  
+日期 1-31 , - * ? / L W C  
+月份 1-12 或者 JAN-DEC , - * /  
+星期 1-7 或者 SUN-SAT , - * ? / L C #  
+年（可选） 留空, 1970-2099 , - * /  
+表达式意义  
+"0 0 12 * * ?" 每天中午12点触发  
+"0 15 10 ? * *" 每天上午10:15触发  
+"0 15 10 * * ?" 每天上午10:15触发  
+"0 15 10 * * ? *" 每天上午10:15触发  
+"0 15 10 * * ? 2005" 2005年的每天上午10:15触发  
+"0 * 14 * * ?" 在每天下午2点到下午2:59期间的每1分钟触发  
+"0 0/5 14 * * ?" 在每天下午2点到下午2:55期间的每5分钟触发  
+"0 0/5 14,18 * * ?" 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发  
+"0 0-5 14 * * ?" 在每天下午2点到下午2:05期间的每1分钟触发  
+"0 10,44 14 ? 3 WED" 每年三月的星期三的下午2:10和2:44触发  
+"0 15 10 ? * MON-FRI" 周一至周五的上午10:15触发  
+"0 15 10 15 * ?" 每月15日上午10:15触发  
+"0 15 10 L * ?" 每月最后一日的上午10:15触发  
+"0 15 10 ? * 6L" 每月的最后一个星期五上午10:15触发  
+"0 15 10 ? * 6L 2002-2005" 2002年至2005年的每月的最后一个星期五上午10:15触发  
+"0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发  
+每天早上6点  
+0 6 * * *  
+每两个小时  
+0 */2 * * *  
+晚上11点到早上8点之间每两个小时，早上八点  
+0 23-7/2，8 * * *  
+每个月的4号和每个礼拜的礼拜一到礼拜三的早上11点  
+0 11 4 * 1-3  
+1月1日早上4点  
+0 4 1 1 *  
+
+
+发布服务器：
+115.238.86.22
+
+122.224.238.68:1080
+
+root
+12306.com.cn!!!
+CENTOS 6.8
+
+192.168.23.37

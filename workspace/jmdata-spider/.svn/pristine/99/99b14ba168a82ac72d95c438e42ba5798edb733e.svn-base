@@ -1,0 +1,4 @@
+#\u683c\u5f0f>    host:port:type  
+#\u591a\u4ee3\u7406\u793a\u4f8b> 122.224.238.68:1080:SOCKS,127.0.0.1:8787:HTTP
+
+proxyString=122.224.238.68:10801:SOCKS,122.224.238.68:10802:SOCKS

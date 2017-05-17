@@ -9,6 +9,7 @@
         <module name="dcpp-common" />
         <module name="dcpp-console" />
         <module name="dcpp-portal" />
+        <module name="jmbi-web" />
         <module name="jmdata-biservice" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
       <module name="dcpp-common" target="1.7" />
       <module name="dcpp-console" target="1.7" />
       <module name="dcpp-portal" target="1.5" />
+      <module name="jmbi-web" target="1.7" />
       <module name="jmdata-biservice" target="1.5" />
     </bytecodeTargetLevel>
   </component>
