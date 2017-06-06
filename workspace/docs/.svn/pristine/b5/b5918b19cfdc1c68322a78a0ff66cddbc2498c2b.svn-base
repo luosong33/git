@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+label .error{
+	color:red;
+}
+
+.search{padding-left:12px;}
+.search-label{line-height:28px;width:90px;float:left;}
+
+.login-body{margin-top:10%}

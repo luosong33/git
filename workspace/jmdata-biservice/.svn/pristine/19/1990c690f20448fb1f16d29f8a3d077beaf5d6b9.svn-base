@@ -1,0 +1,21 @@
+package org.jumao.bi.utis.constants;
+
+/**
+ * Created by kartty on 2017/5/23.
+ */
+public class BasicUrl {
+
+    protected static final String PLATFORM_AND_DATE_RANGE_PATH_PARAM =
+            "/"+Key.PLATFORM+"/{"+Key.PLATFORM+"}/"+Key.START_DATE+"/{"+Key.START_DATE+"}/"+Key.END_DATE+"/{"+Key.END_DATE+"}";
+
+    protected static final String NEWLY_INCR = "newlyIncr";
+
+    protected static final String LINE_CHART = "lineChart";
+    protected static final String PIE_CHART = "pieChart";
+    protected static final String BAR_CHART = "barChart";//条形图，横着的柱状图
+    protected static final String TABLE = "table";
+    protected static final String HISTOGRAM = "histogram";
+    protected static final String CHINA_MAP = "chinaMap";
+
+
+}

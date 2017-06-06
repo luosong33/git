@@ -1,0 +1,288 @@
+package org.jumao.bi.service.impl.trade.register;
+
+import org.apache.log4j.Logger;
+import org.jumao.bi.constant.ServiceConst;
+import org.jumao.bi.entites.ResponseResult;
+import org.jumao.bi.entites.charts.CommonBean;
+import org.jumao.bi.entites.charts.PieChart;
+import org.jumao.bi.entites.trade.register.*;
+import org.jumao.bi.entites.trade.register.vo.*;
+import org.jumao.bi.utis.*;
+import org.jumao.bi.utis.comparator.DateTotalComp;
+
+import java.util.*;
+
+/**
+ * Created by kartty on 2017/5/2.
+ */
+public class ChartBasicService extends ChartServiceHelper {
+
+    private Logger logger = Logger.getLogger(ChartBasicService.class);
+    private DateTotalComp dateTotalComp = new DateTotalComp();
+
+    protected String checkAndlogDateRange(String platform, String startDate, String endDate) throws Exception {
+        //RespUtils.checkPlatform(platform);
+        RespUtils.checkDateRange(startDate, endDate);
+        return StringUtils.joinStr(GeneralUtils.getUpperMethod(), ", platform:", platform,
+                ", startDate:", startDate, ", endDate:", endDate);
+    }
+
+
+    protected boolean checkAccurateToHour(String startDate, String endDate) {
+        return (startDate != null && startDate.equals(endDate));
+    }
+
+    /**
+     * 处理折线图、柱状图，所有返回数据的日期格式都是 yyyyMMdd
+     */
+    protected ChartResp getLineChartFromNewRegs(List<TimeTotalVo> list, String legend, String startDate, String endDate,
+                                                boolean formatToNhAnd_, boolean accurateToHour) throws Exception {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+        if (list == null) {
+            return cp;
+        }
+        Map<String, Long> dateTotalMap = getEmptyDateTotalMap(startDate, endDate, accurateToHour);
+        RegLineChart lc = new RegLineChart();
+        lc.setLegendData(legend);
+
+        int size = list.size();
+
+        for (int i = 0; i < size; i++) {
+            try {
+                TimeTotalVo ttv = list.get(i);
+                String time = parseTime(ttv.getCreateTime(), formatToNhAnd_, accurateToHour);
+                dateTotalMap.put(time, ttv.getTotal());
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        List<Map.Entry<String, Long>> entryList = new ArrayList(dateTotalMap.entrySet());
+        Collections.sort(entryList, dateTotalComp);
+        String[] xAxisData = new String[dateTotalMap.size()];
+        long[] seriesData = new long[dateTotalMap.size()];
+
+        for (int i = 0; i < entryList.size(); i++) {
+            Map.Entry<String, Long> entry = entryList.get(i);
+            xAxisData[i] = entry.getKey();
+            seriesData[i] = entry.getValue();
+        }
+        lc.setxAxisData(xAxisData);
+        lc.setSeriesData(seriesData);
+
+        cp.setLineChart(lc);
+        return cp;
+    }
+
+
+    /**
+     * 处理条形图
+     */
+    protected ChartResp getBarChartFromNewRegs(List<GroupByVo> list,
+            Map<Integer, String> typeNameMap, String legend) {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+        if (list == null) {
+            return cp;
+        }
+
+        RegLineChart lc = new RegLineChart();
+        lc.setLegendData(legend);
+
+        Iterator<GroupByVo> it = list.iterator();
+        while (it.hasNext()) {
+            if (it.next().getType() == null) {
+                it.remove();
+            }
+        }
+
+        int size = list.size();
+        String[] yAxisData = new String[size];
+        long[] seriesData = new long[size];
+
+        for (int i = 0; i < size; i++) {
+            try {
+                GroupByVo gbv = list.get(i);
+                Integer type = gbv.getType();
+                if (type == null) {
+                    continue;
+                }
+                yAxisData[i] = checkTypeName(type, typeNameMap.get(type));
+                seriesData[i] = gbv.getTotal();
+                System.out.println();
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        lc.setyAxisData(yAxisData);
+        lc.setSeriesData(seriesData);
+
+        cp.setLineChart(lc);
+        return cp;
+    }
+
+    protected Map<Integer,String> getProvinceCodeNameMap(List<GroupByVo> list) {
+        Map<Integer, String> provinceCodeNameMap = new HashMap<Integer, String>();
+
+        for (GroupByVo ele : list) {
+            Integer areaCode = ele.getType();
+            if (areaCode == null) {
+                continue;
+            }
+            String areaName = ele.getTypeName();
+            if (areaName.startsWith("广西") || areaName.startsWith("宁夏") || areaName.startsWith("新疆")) {
+                provinceCodeNameMap.put(areaCode, areaName.substring(0, 2));
+
+            } else {
+                areaName = areaName.replaceAll("(市|省|自治区|特别行政区)", "");
+                provinceCodeNameMap.put(areaCode, areaName);
+            }
+        }
+
+        return provinceCodeNameMap;
+    }
+
+    /**
+     * 处理饼图、中国地图
+     */
+    protected ChartResp getPieChartFromGroupByVo(List<GroupByVo> list,
+            Map<Integer, String> typeNameMap) {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+
+        PieChart pc = new PieChart();
+        int size = list.size();
+
+        String[] legendData = new String[size];
+        List<CommonBean> seriesData = new ArrayList<CommonBean>(size);
+        long sumCounts = 0L;
+
+        for (int i = 0; i < size; i++) {
+            try {
+                GroupByVo dsi = list.get(i);
+                Integer type = dsi.getType();
+                String name = checkTypeName(type, typeNameMap.get(type));
+
+                legendData[i] = name;
+                seriesData.add(new CommonBean(name, String.valueOf(dsi.getTotal())));
+                sumCounts += dsi.getTotal();
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        pc.setLegendData(legendData);
+        pc.setSeriesData(seriesData);
+        cp.setPieChart(pc);
+        cp.setCounts(sumCounts);
+        return cp;
+    }
+
+
+    /**
+     * 处理 多种数据维度的 饼图、中国地图
+     */
+    protected MultiDimChartResp getPieForMultiDim(Map<String, ChartResp> legendCpMap) {
+        MultiDimChartResp mdcp = new MultiDimChartResp();
+        mdcp.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+
+        String[] data = new String[legendCpMap.size()];
+        List<PieMultiSeriesVo> series = new ArrayList<PieMultiSeriesVo>(64);
+
+        int index = 0;
+        for (Map.Entry<String, ChartResp> ele : legendCpMap.entrySet()) {
+            String legend = ele.getKey();
+            data[index] = legend;
+
+            ChartResp cp = ele.getValue();
+            PieMultiSeriesVo sv = new PieMultiSeriesVo();
+            sv.setName(legend);
+            sv.setData(cp.getPieChart().getSeriesData());
+            series.add(sv);
+
+            index++;
+        }
+
+        StrArrData legend = new StrArrData();
+        legend.setData(data);
+
+        MultiDimPie mdp = new MultiDimPie();
+        mdp.setLegend(legend);
+        mdp.setSeries(series);
+        mdcp.setPieChart(mdp);
+        return mdcp;
+    }
+
+
+    /**
+     * 处理 多种数据维度的 条形图
+     */
+    @Deprecated
+    protected MultiDimChartResp getBarChartForMultiDim(Map<String, ChartResp> legendCpMap) {
+        MultiDimChartResp mdcp = new MultiDimChartResp();
+        mdcp.setStatus(new ResponseResult(ServiceConst.SUCCESS_CODE, ServiceConst.SUCCESS_MSG));
+
+        String[] data = new String[legendCpMap.size()];
+        List<LineMultiSeriesVo> series = new ArrayList<LineMultiSeriesVo>(64);
+
+        List<Map<String, Long>> typeNameTotalMaps = genTypeNameTotalMaps(legendCpMap);
+        addMapForTypeNameTotal(typeNameTotalMaps);
+
+        StrArrData legend = new StrArrData();
+        legend.setData(data);
+
+//        mdcp.setLegend(legend);
+//        mdcp.setSeries(series);
+        return mdcp;
+    }
+
+
+    protected ChartResp getTableFromNewRegs(List<DataSrcIncrTable> list, long totalUser,
+                                            boolean formatToNhAnd_, boolean accurateToHour) throws Exception {
+        ChartResp cp = RespUtils.getSuccessChartResp();
+
+        double sumCounts = 0D;
+        for (DataSrcIncrTable ele : list) {
+            Long total = ele.getTotal();
+            if (total == null) {
+                continue;
+            }
+            sumCounts += total;
+        }
+
+        List<TableVo> tableData = new ArrayList<TableVo>(list.size());
+        for (DataSrcIncrTable ele : list) {
+            try {
+                Long total = ele.getTotal();
+                if (total == null) {
+                    continue;
+                }
+                Integer type = ele.getType();
+                String rate = dealRatePercent(total, sumCounts);
+
+                String timeParsed = parseTime(ele.getCreateTime(), formatToNhAnd_, accurateToHour);
+                tableData.add(new TableVo(timeParsed,
+                        checkTypeName(type, dataSrcNameMap.get(type)),
+                        String.valueOf(ele.getTotal()),
+                        rate));
+            } catch (Exception e) {
+                LogUtils.writeLogs(logger, e.getMessage());
+            }
+        }
+
+        cp.setTableData(tableData);
+        cp.setCounts((long) sumCounts);
+        cp.setPercent(dealRatePercent(sumCounts, totalUser));
+        return cp;
+    }
+
+
+    protected Map<Integer,String> getTypeNameMapFrom(List<GroupByVo> payList) {
+        Map<Integer,String> map = new HashMap<Integer, String>();
+
+        for (GroupByVo ele : payList) {
+            map.put(ele.getType(), ele.getTypeName());
+        }
+        return map;
+    }
+
+}

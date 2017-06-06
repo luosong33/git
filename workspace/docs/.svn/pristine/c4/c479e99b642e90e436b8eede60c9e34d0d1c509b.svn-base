@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="1 seconds">
+    <property scope="context" resource="config/dove.properties"/>
+    <contextName>${appName}</contextName>
+    <contextListener class="com.jumore.dove.common.log.LoggerStartupListener"/>
+    <jmxConfigurator/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss}[%t]%-5p %c{36}.%M\(%L\) %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${user.home}/logs/ecenter-dubbo-service/ecenter-dubbo-service.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss}[%t]%-5p %c{36}.%M\(%L\) %m%n</pattern>
+        </encoder>
+    </appender> -->
+
+    <appender name="flume" class="com.jumore.dove.common.log.FlumeAppender">
+        <flumeAgents>
+            ${flumeAgent}
+        </flumeAgents>
+        <flumeProperties>
+            connect-timeout=4000;
+            request-timeout=8000;
+            backoff=true;
+            maxBackoff=60000
+        </flumeProperties>
+        <batchSize>100</batchSize>
+        <reportingWindow>500</reportingWindow>
+        <application>${appName}</application>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss}[%t]%-5p %c{36}.%M\(%L\) %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNCFile" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="file"/>
+    </appender>
+    <appender name="ASYNCConsole" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="stdout"/>
+    </appender>
+
+    <appender name="ASYNCFlume" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="flume"/>
+    </appender>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.jumore.dove" level="DEBUG"/>
+    <logger name="org.mybatis" level="DEBUG"/>
+    <logger name="UcJumoreUserMapper" level="DEBUG"/>
+    <logger name="UcCompanyMapper" level="DEBUG"/>
+    <logger name="UcCompanyUserMapper" level="DEBUG"/>
+    <logger name="UcCompanyCompanyMapper" level="DEBUG"/>
+    <logger name="UcUserLicMapper" level="DEBUG"/>
+    <logger name="UcCompanyLicMapper" level="DEBUG"/>
+    <logger name="OtherMapper" level="DEBUG"/>
+
+    <logger name="UcJumoreUserEnMapper" level="DEBUG"/>
+    <logger name="UcCompanyEnMapper" level="DEBUG"/>
+    <logger name="UcCompanyUserEnMapper" level="DEBUG"/>
+
+    <logger name="dao" level="DEBUG"></logger>
+    <logger name="com.teambytes.logback.flume.EventReporter$ReportingJob" level="INFO"/>
+    <root level="INFO">
+        <!-- <appender-ref ref="ASYNCFile"/> -->
+        <appender-ref ref="ASYNCConsole"/>
+        <appender-ref ref="ASYNCFlume"/>
+    </root>
+</configuration>

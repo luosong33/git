@@ -1,0 +1,27 @@
+package org.jumao.bi.dao;
+
+import java.util.List;
+
+import org.jumao.bi.component.BaseInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+@Repository("abstractBaseDao")
+public class AbstractBaseDao implements IBaseDao {
+	
+	@Autowired
+    JdbcTemplate jdbcTemplate;
+	@Override
+	public List<BaseInfo> getListBySql(String sql) throws Exception{
+		RowMapper<BaseInfo> rowMapper = new BeanPropertyRowMapper<BaseInfo>(BaseInfo.class);
+        List<BaseInfo> baseInfos = jdbcTemplate.query(sql, rowMapper);
+        return baseInfos;
+	}
+	@Override
+	public <T> Object getObjectBySql(String sql,Class<T> requiredType) throws Exception{		
+        return jdbcTemplate.queryForObject(sql, requiredType);
+	}
+}

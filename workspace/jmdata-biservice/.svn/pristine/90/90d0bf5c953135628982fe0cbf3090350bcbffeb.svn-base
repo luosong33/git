@@ -1,0 +1,163 @@
+package org.jumao.bi.service.trade.register;
+
+import org.jumao.bi.utis.constants.Key;
+import org.jumao.bi.utis.constants.Url;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+
+/**
+ * 注册分析相关接口
+ * @author chen qian
+ */
+@Path("/v1/register/")
+@Produces(MediaType.APPLICATION_JSON)
+public interface RegisterAnalysis {
+
+	/**
+	 * 新增注册数 折线图
+	 */
+	@GET
+	@Path(Url.REG_NEWLYINCR_LINECHART)
+	public Response getNewRegLineChart(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 新增注册数 饼图
+	 */
+	@GET
+	@Path(Url.REG_NEWLYINCR_PIECHART)
+	public Response getNewRegPieChart(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 新增注册数 表格
+	 */
+	@GET
+	@Path(Url.REG_NEWLYINCR_TABLE)
+	public Response getNewRegTable(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 认证用户 概览折线图
+	 */
+	@GET
+	@Path(Url.AUTH_U_OVERVIEW_LINECHART)
+	public Response getAuthUOverview(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate,
+			@PathParam(Key.TYPE) String type) throws Exception;
+
+	/**
+	 * 认证用户 三证审核历史累积
+	 */
+	@GET
+	@Path(Url.AUTH_U_CERT3_HISTORY)
+	public Response getAuthUCert3History(
+			@PathParam(Key.PLATFORM) String platform) throws Exception;
+
+	/**
+	 * 认证用户 认证审核通过占比
+	 */
+	@GET
+	@Path(Url.AUTH_U_PASSED_HISTOGRAM)
+	public Response getAuthUPassedHistogram(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 认证用户 三证合一比例饼图
+	 */
+	@GET
+	@Path(Url.AUTH_U_LIC_PIE)
+	public Response getAuthULicPercentPie(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 认证用户  三证审核、授权书地域分布 中国地图
+	 */
+	@GET
+	@Path(Url.AUTH_U_AREA_DIST)
+	public Response getAuthUAreaDist(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 认证用户 三证审核、授权书地域分布TOP10
+	 */
+	@GET
+	@Path(Url.AUTH_U_AREA_DIST_TOP10)
+	public Response getAuthUAreaDistTop10(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 签章支付 概览折线图
+	 */
+	@GET
+	@Path(Url.VISA_AND_PAY_OVERVIEW_LINECHART)
+	public Response getVisaAndPayOverview(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate,
+			@PathParam(Key.TYPE) String type) throws Exception;
+
+	/**
+	 * 签章支付 历史累计 饼图
+	 */
+	@GET
+	@Path(Url.VISA_AND_PAY_HISTORY_PIE)
+	public Response getVisaAndPayHistoryPie(
+			@PathParam(Key.PLATFORM) String platform) throws Exception;
+
+
+	/**
+	 * 签章和支付 开通地域分布 中国地图
+	 */
+	@GET
+	@Path(Url.VISA_AND_PAY_AREA_DIST)
+	public Response getVisaAndPayAreaDist(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+	/**
+	 * 签章 地域分布TOP10
+	 */
+	@GET
+	@Path(Url.VISA_AREA_DIST_TOP10)
+	public Response getVisaAreaDistTop10(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+
+	/**
+	 * 支付 地域分布TOP10
+	 */
+	@GET
+	@Path(Url.PAY_AREA_DIST_TOP10)
+	public Response getPayAreaDistTop10(
+			@PathParam(Key.PLATFORM) String platform,
+			@PathParam(Key.START_DATE) String startDate,
+			@PathParam(Key.END_DATE) String endDate) throws Exception;
+
+
+}

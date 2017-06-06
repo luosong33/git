@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd"
+	default-lazy-init="true">
+
+
+	<import resource="classpath:cxf/cxf.xml" />
+	<import resource="classpath:cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:cxf/cxf-servlet.xml" />
+
+	<bean id="pingSvc" class="org.jumao.bi.service.impl.test.PingSvcImpl" />
+	<bean id="baiduSvc" class="org.jumao.bi.service.impl.baidu.BaiduSvcImpl" />
+	<bean id="overviewSvc" class="org.jumao.bi.service.impl.jdt.overview.OverviewSvcImpl" />
+	<bean id="inoutSvc" class="org.jumao.bi.service.impl.jdt.inout.InOutSvcImpl" />
+	<bean id="companySvc" class="org.jumao.bi.service.impl.jdt.company.CompanySvcImpl" />
+	<bean id="areaOrderSvc" class="org.jumao.bi.service.impl.jdt.areaorder.AreaOrderSvcImpl" />
+	<bean id="userTraceSvc" class="org.jumao.bi.service.impl.usertrace.UserTraceSvcImpl" />
+	<bean id="operationOverview" class="org.jumao.bi.service.impl.trade.operate.OperationSvcImpl" />
+	<bean id="operationOrderSvc" class="org.jumao.bi.service.impl.trade.operate.OperationOrderNSvcImpl" />
+	<bean id="operationGoodsSvc" class="org.jumao.bi.service.impl.trade.operate.OperationGoodsSvcImpl" />
+	<bean id="operationConvFunnelSvc" class="org.jumao.bi.service.impl.trade.operate.OperationConvFunnelSvcImpl" />
+	<bean id="registerAnalysis" class="org.jumao.bi.service.impl.trade.register.RegisterAnalysisImpl" />
+	<bean id="shopSvc" class="org.jumao.bi.service.impl.trade.shop.ShopSvcImpl" />
+	<bean id="dealSvc" class="org.jumao.bi.service.impl.trade.deal.DealSvcImpl" />
+	<bean id="goodsAnalysis" class="org.jumao.bi.service.impl.trade.goods.GoodsAnalysisImpl" />
+	<bean id="masOperationOverview" class="org.jumao.bi.service.impl.trade.operate.MasOperationSvcImpl" />
+	<bean id="shopAnalysisSvc" class="org.jumao.bi.service.impl.trade.shop.ShopAnalysisSvcImpl" />
+	<jaxrs:server id="restServiceContainer" address="/">
+		<jaxrs:serviceBeans>
+			<ref bean="pingSvc" />
+			<ref bean="baiduSvc" />
+			<ref bean="overviewSvc" />
+			<ref bean="inoutSvc" />
+			<ref bean="companySvc" />
+			<ref bean="areaOrderSvc" />
+			<ref bean="userTraceSvc" />
+			<ref bean="operationOverview" />
+			<ref bean="operationOrderSvc" />
+			<ref bean="operationGoodsSvc" />
+			<ref bean="operationConvFunnelSvc" />
+			<ref bean="registerAnalysis" />
+			<ref bean="shopSvc" />
+			<ref bean="dealSvc" />
+			<ref bean="goodsAnalysis" />
+			<ref bean="masOperationOverview" />
+			<ref bean="shopAnalysisSvc" />
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:languageMappings>
+			<entry key="en" value="en-gb" />
+		</jaxrs:languageMappings>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
+			<bean class="org.jumao.bi.provider.InvokeFaultExceptionMapper"></bean>
+		</jaxrs:providers>
+
+	</jaxrs:server>
+		<!-- 日志拦截器 -->
+	<bean id="logInterceptor" class="org.jumao.bi.component.LogInterceptor"/>
+	<!-- 异常拦截器 -->
+	<bean id="exceptionHandler" class="org.jumao.bi.component.ExceptionAdvisor"/>  
+	<bean name="beanNameAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" >  
+		<property name="beanNames">
+			<!-- 配置需要进行日志记录的Service-->
+			<value>operationOrderSvc,shopAnalysisSvc</value>
+   		</property>
+   		<property name="interceptorNames">
+    		<list>
+         		<value>exceptionHandler</value>
+         		<value>logInterceptor</value>
+    		</list>
+   		</property>
+	</bean>
+</beans>

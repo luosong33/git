@@ -1,0 +1,22 @@
+package org.jumao.bi.component;
+
+import java.util.List;
+
+import org.jumao.bi.entites.charts.NewPieChart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class PieChartBuilder extends BaseChartBuilder {
+	
+	@Autowired
+	private NewPieChart pieChart;
+	@Override
+	public  void buildData(List<BaseInfo> baseInfos,BaseResponse response,ComponentContext context) throws Exception {
+		// TODO Auto-generated method stub
+		pieChart.setSeriesData(getSeriesData(baseInfos,context.getReturnType()));
+        pieChart.setLegendData(getLegendData(baseInfos));
+        response.setPieChart(pieChart);
+	}
+
+}

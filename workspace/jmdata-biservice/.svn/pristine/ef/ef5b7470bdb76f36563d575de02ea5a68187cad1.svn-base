@@ -1,0 +1,420 @@
+package org.jumao.bi.service.impl.trade.deal;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.jumao.bi.constant.MapConstants;
+import org.jumao.bi.entites.PieCharts;
+import org.jumao.bi.entites.SeriesData;
+import org.jumao.bi.service.trade.deal.IDealSvc;
+import org.jumao.bi.utis.PlatFormUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class DealSvcImpl implements IDealSvc {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public Response operate(String startDate, String endDate, String platform) throws Exception {
+        String subSql = "";
+        if (StringUtils.isNotBlank(startDate)) {
+            subSql += " and c.create_time >= '" + this.formatDate(startDate) + " 00:00:00'";
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            subSql += " and c.create_time <= '" + this.formatDate(endDate) + " 23:59:59'";
+        }
+        StringBuffer sql = new StringBuffer(" SELECT count(c.order_id) order_count,ifnull(sum(c.pay_money),0) order_money");
+        sql.append(" FROM jmbi_trade_order c").append(" WHERE c.order_state in (20,30,40,50,70) ");
+        StringBuffer paySql = new StringBuffer("SELECT count(c.payment_id) payment_count,ifnull(sum(c.pay_money),0) payment_money ");
+        paySql.append(" FROM jmbi_trade_payment c,jmbi_trade_order o ").append(" WHERE c.order_id = o.order_id AND c.pay_flag = 1 ");
+        String subYearSql = " and c.create_time like '" + org.jumao.bi.utis.DateUtils.getYear(null) + "%'";
+        String yearSql = sql.toString() + subYearSql;
+        String yearPaySql = paySql.toString() + subYearSql;
+
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and c.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+            paySql.append(" and o.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+            yearSql += " and c.industry_id = " + PlatFormUtil.getPlatformV(platform);
+            yearPaySql += " and o.industry_id = " + PlatFormUtil.getPlatformV(platform);
+        }
+        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+        data.add(jdbcTemplate.queryForMap(sql.append(subSql).toString()));
+        data.get(0).putAll(jdbcTemplate.queryForMap(paySql.append(subSql).toString()));
+        data.add(jdbcTemplate.queryForMap(yearSql));
+        data.get(1).putAll(jdbcTemplate.queryForMap(yearPaySql));
+
+        return Response.ok(data).build();
+    }
+
+    private String formatDate(String date) {
+        if (StringUtils.isNotBlank(date)) {
+            date = StringUtils.left(date, 4) + "-" + StringUtils.substring(date, 4, 6) + "-" + StringUtils.right(date, 2);
+        }
+        return date;
+    }
+
+    public Response translate(String startDate, String endDate, String platform) throws Exception {
+        String subSql = "";
+        if (StringUtils.isNotBlank(startDate)) {
+            subSql += " and o.create_time >= '" + this.formatDate(startDate) + " 00:00:00'";
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            subSql += " and o.create_time <= '" + this.formatDate(endDate) + " 23:59:59'";
+        }
+
+        if (StringUtils.isNotBlank(platform)) {
+            subSql += " and o.industry_id = " + PlatFormUtil.getPlatformV(platform);
+        }
+
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        StringBuffer sql = new StringBuffer("select count(distinct c.comp_id)");// 下单uv
+        sql.append(" from jmbi_trade_order o,jmbi_trade_company c,jmbi_trade_center_user u")
+                .append(" where o.member_id=u.user_id and u.company_id=c.comp_id").append(subSql);
+        setData(seriesData, sql.toString(), "下单uv");
+        setData(seriesData, sql.toString().concat(" and o.order_state in (20,30,40,50,70)"), "确认订单uv");
+        setData(seriesData, sql.toString().concat(" and o.contract_status=40"), "签订合同uv");
+        setData(seriesData, sql.toString().concat(" and o.order_state in (40,50,70)"), "订单支付uv");
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(Arrays.asList("下单uv", "确认订单uv", "签订合同uv", "订单支付uv"));
+        pieCharts.setTitle("交易转化跟踪");
+        pieCharts.setSeriesName("交易转化跟踪");
+        pieCharts.setSeriesData(seriesData);
+        return Response.ok(pieCharts).build();
+    }
+
+    private void setData(List<SeriesData> seriesData, String placeSql, String name) {
+        long count = jdbcTemplate.queryForObject(placeSql, Long.class);
+        SeriesData sData = new SeriesData();
+        sData.setName(name);
+        sData.setValue(BigDecimal.valueOf(count));
+        seriesData.add(sData);
+    }
+
+    public Response pickup(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("select o.shipping_type,count(distinct c.comp_id) count");
+        sql.append(" from jmbi_trade_order o,jmbi_trade_company c,jmbi_trade_center_user u").append(
+                " where o.member_id=u.user_id and u.company_id=c.comp_id and o.shipping_type is not NULL ");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and o.create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and o.create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and o.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        sql.append(" group by o.shipping_type").append(" order by o.shipping_type");
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        PieCharts pieCharts = this.setPieCharts(data, "shipping_type", "提货方式用户占比", "提货方式用户占比");
+        return Response.ok(pieCharts).build();
+    }
+
+    private PieCharts setPieCharts(List<Map<String, Object>> data, String key, String title, String seriesName) {
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        List<String> legendData = new ArrayList<String>();
+        SeriesData sData = null;
+        String name = null;
+        for (Map<String, Object> map : data) {
+            name = MapConstants.DEAL_MAP.get(key + "_" + String.valueOf(map.get(key)));
+            if (StringUtils.isBlank(name)) {
+                continue;
+            }
+            sData = new SeriesData();
+            sData.setName(name);
+            sData.setValue(NumberUtils.createBigDecimal(map.get("count").toString()));
+            seriesData.add(sData);
+            legendData.add(name);
+        }
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(legendData);
+        pieCharts.setTitle(title);
+        pieCharts.setSeriesName(seriesName);
+        pieCharts.setSeriesData(seriesData);
+        return pieCharts;
+
+    }
+
+    @Override
+    public Response delivery(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("SELECT a.order_id,datediff(a.time1,b.time2) days ");
+        sql.append("FROM (SELECT o.order_id,create_time time1 FROM jmbi_trade_order_track o WHERE o.memo = '订单确认') a,")
+                .append("(SELECT o.order_id, o.create_time time2 FROM jmbi_trade_order_track o WHERE o.memo = '发货') b,jmbi_trade_order o ")
+                .append(" WHERE a.order_id = b.order_id AND o.order_id = a.order_id");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and o.create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and o.create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and o.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        List<String> legendData = new ArrayList<String>();
+        section(data, seriesData, legendData);
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(legendData);
+        pieCharts.setTitle("交货时间占比");
+        pieCharts.setSeriesName("交货时间占比");
+        pieCharts.setSeriesData(seriesData);
+        return Response.ok(pieCharts).build();
+    }
+
+    private void section(List<Map<String, Object>> data, List<SeriesData> seriesData, List<String> legendData) {
+        Map<String, Long> dataMap = new HashMap<String, Long>();
+        long days = 0;
+        String dataKey = null;
+        for (Map<String, Object> map : data) {
+            days = NumberUtils.toLong(map.get("days").toString(), 0);
+            if (days >= 10) {
+                dataKey = "1";
+            } else if (days >= 7 && days < 10) {
+                dataKey = "2";
+            } else if (days >= 5 && days < 7) {
+                dataKey = "3";
+            } else if (days >= 3 && days < 5) {
+                dataKey = "4";
+            } else {
+                dataKey = "5";
+            }
+            if (dataMap.get(dataKey) == null) {
+                dataMap.put(dataKey, 1L);
+            } else {
+                dataMap.put(dataKey, dataMap.get(dataKey) + 1L);
+            }
+        }
+
+        List<String> keyList = new ArrayList<String>(dataMap.keySet());
+        Collections.sort(keyList);
+        SeriesData sData = null;
+        BigDecimal value = BigDecimal.ZERO;
+        for (String key : keyList) {
+            value = BigDecimal.valueOf(dataMap.get(key));
+            if ("1".equals(key)) {
+                key = "10-15天以内";
+            } else if ("2".equals(key)) {
+                key = "7-10天以内";
+            } else if ("3".equals(key)) {
+                key = "5-7天以内";
+            } else if ("4".equals(key)) {
+                key = "3-5天以内";
+            } else if ("5".equals(key)) {
+                key = "3天以内";
+            }
+            sData = new SeriesData();
+            sData.setName(key);
+            sData.setValue(value);
+            seriesData.add(sData);
+            legendData.add(key);
+        }
+    }
+
+    public Response receipt(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("SELECT a.order_id,datediff(a.time1,b.time2) days ");
+        sql.append("FROM (SELECT o.order_id,create_time time1 FROM jmbi_trade_order_track o WHERE o.memo = '发货') a,")
+                .append("(SELECT o.order_id, o.create_time time2 FROM jmbi_trade_order_track o WHERE o.memo = '确认收货') b,jmbi_trade_order o ")
+                .append(" WHERE a.order_id = b.order_id AND o.order_id = a.order_id");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and o.create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and o.create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and o.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        List<String> legendData = new ArrayList<String>();
+        this.section(data, seriesData, legendData);
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(legendData);
+        pieCharts.setTitle("确认收货时间");
+        pieCharts.setSeriesName("确认收货货时间");
+        pieCharts.setSeriesData(seriesData);
+        return Response.ok(pieCharts).build();
+    }
+
+    public Response settle(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("select clearing_type,count(distinct order_id) count,sum(pay_money)");
+        sql.append(" from jmbi_trade_order ").append(" where clearing_type is not NULL ");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        sql.append(" group by clearing_type ").append("order by clearing_type");
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        PieCharts pieCharts = this.setPieCharts(data, "clearing_type", "结算方式占比", "结算方式占比");
+        return Response.ok(pieCharts).build();
+    }
+
+    public Response pay(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("select payment_type,count(distinct order_id) count,sum(pay_money)");
+        sql.append(" from jmbi_trade_order ").append(" where payment_type is not NULL ");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        sql.append(" GROUP BY payment_type").append(" order by payment_type");
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        PieCharts pieCharts = this.setPieCharts(data, "payment_type", "支付方式", "支付方式");
+        return Response.ok(pieCharts).build();
+    }
+
+    public Response contract(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("select contract_type,count(distinct order_id) count,sum(pay_money)");
+        sql.append(" from jmbi_trade_order ").append(" where contract_type is not NULL ");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        sql.append(" GROUP BY contract_type").append(" order by contract_type");
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        PieCharts pieCharts = this.setPieCharts(data, "contract_type", "合同方式", "合同方式");
+        return Response.ok(pieCharts).build();
+    }
+
+    public Response areaAmount(String role, String startDate, String endDate, String platform, String orderby) throws Exception {
+        String subSql = "";
+        if (StringUtils.isNotBlank(startDate)) {
+            subSql += " and o.create_time >= '" + this.formatDate(startDate) + " 00:00:00'";
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            subSql += " and o.create_time <= '" + this.formatDate(endDate) + " 23:59:59'";
+        }
+
+        if (StringUtils.isNotBlank(platform)) {
+            subSql += " and o.industry_id = " + PlatFormUtil.getPlatformV(platform);
+        }
+        StringBuffer sql = new StringBuffer();
+        if ("seller".equalsIgnoreCase(role)) {// 卖家
+            sql.append("SELECT ordernum,paytotal,address_province,area_name ")
+                    .append("FROM (SELECT count(DISTINCT order_id) ordernum,sum(pay_money) paytotal,c.address_province ")
+                    .append("FROM jmbi_trade_order o,jmbi_trade_company c,jmbi_trade_shop s ")
+                    .append("WHERE o.store_id = s.shop_id AND s.comp_id = c.comp_id AND c.address_province IS NOT NULL ").append(subSql)
+                    .append(" GROUP BY address_province ) t ")
+                    .append("LEFT JOIN jmbi_trade_operation_area a ON t.address_province = a.AREA_CODE");
+        } else if ("buyer".equalsIgnoreCase(role)) {// 买家
+            sql.append("SELECT ordernum,paytotal,address_province,area_name ")
+                    .append("FROM (SELECT count(DISTINCT order_id) ordernum,sum(pay_money) paytotal,c.address_province ")
+                    .append("FROM jmbi_trade_order o,jmbi_trade_company c,jmbi_trade_center_user u")
+                    .append("  WHERE o.member_id = u.user_id AND u.company_id = c.comp_id AND c.address_province IS NOT NULL ")
+                    .append(subSql).append(" GROUP BY address_province ) t ")
+                    .append("LEFT JOIN jmbi_trade_operation_area a ON t.address_province = a.AREA_CODE");
+        } else {
+            return Response.ok().build();
+        }
+        if (StringUtils.isNotBlank(orderby)) {
+            sql.append(" order by t.").append(orderby).append(" desc");// 方便取top
+                                                                       // ten
+        }
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        // 处理地区名称
+        String areaName = null;
+        for (Map<String, Object> map : data) {
+            if (map.get("area_name") == null) {
+                continue;
+            }
+            areaName = map.get("area_name").toString();
+            if (areaName.startsWith("内蒙古") || areaName.startsWith("黑龙江")) {
+                areaName = areaName.substring(0, 3);
+            } else {
+                areaName = areaName.substring(0, 2);
+            }
+            map.put("area_name", areaName);
+        }
+        return Response.ok(data).build();
+    }
+
+    public Response payChannel(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("SELECT c.PAY_CHANNEL_NO,c.PAY_CHANNEL_NAME,count(DISTINCT t.order_no),sum(t.pay_amt) pay_amt ");
+        sql.append(" FROM jmbi_ep_trade t, jmbi_epay_channel c").append(" where t.channel_no = c.pay_channel_no  ");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and t.create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and t.create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            platform = platform.endsWith("00") ? StringUtils.left(platform, 4) : platform;
+            sql.append(" and t.industry_id = ").append(platform);
+        }
+        sql.append(" GROUP BY c.PAY_CHANNEL_NO, c.PAY_CHANNEL_NAME");
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        List<String> legendData = new ArrayList<String>();
+        SeriesData sData = null;
+        for (Map<String, Object> map : data) {
+            sData = new SeriesData();
+            sData.setName(map.get("PAY_CHANNEL_NAME").toString());
+            sData.setValue(NumberUtils.createBigDecimal(map.get("pay_amt").toString()));
+            seriesData.add(sData);
+            legendData.add(map.get("PAY_CHANNEL_NAME").toString());
+        }
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(legendData);
+        pieCharts.setTitle("支付渠道金额占比");
+        pieCharts.setSeriesName("支付渠道金额占比");
+        pieCharts.setSeriesData(seriesData);
+        return Response.ok(pieCharts).build();
+    }
+
+    @Override
+    public Response paymentDays(String startDate, String endDate, String platform) throws Exception {
+        StringBuffer sql = new StringBuffer("SELECT o.order_id,datediff(t.time1,o.create_time) days ");
+        sql.append("FROM jmbi_trade_order_track  o ")
+                .append("LEFT JOIN (SELECT order_id,max(create_time) AS time1 FROM jmbi_trade_payment WHERE pay_flag = 1 GROUP BY order_id) t ON o.order_id = t.order_id ")
+                .append("LEFT JOIN jmbi_trade_order r ON o.order_id=r.order_id").append(" WHERE o.memo = '订单确认' AND t.time1 IS NOT NULL");
+        if (StringUtils.isNotBlank(startDate)) {
+            sql.append(" and r.create_time >= '").append(this.formatDate(startDate)).append(" 00:00:00'");
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            sql.append(" and r.create_time <= '").append(this.formatDate(endDate)).append(" 23:59:59'");
+        }
+        if (StringUtils.isNotBlank(platform)) {
+            sql.append(" and r.industry_id = ").append(PlatFormUtil.getPlatformV(platform));
+        }
+        List<Map<String, Object>> data = jdbcTemplate.queryForList(sql.toString());
+        List<SeriesData> seriesData = new ArrayList<SeriesData>();
+        List<String> legendData = new ArrayList<String>();
+        section(data, seriesData, legendData);
+
+        PieCharts pieCharts = new PieCharts();
+        pieCharts.setLegendData(legendData);
+        pieCharts.setTitle("付款天数用户占比");
+        pieCharts.setSeriesName("付款天数用户占比");
+        pieCharts.setSeriesData(seriesData);
+        return Response.ok(pieCharts).build();
+    }
+}

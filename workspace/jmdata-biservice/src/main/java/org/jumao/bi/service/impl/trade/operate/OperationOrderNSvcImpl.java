@@ -1,0 +1,71 @@
+package org.jumao.bi.service.impl.trade.operate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.Response;
+
+import org.jumao.bi.component.BaseChartBuilder;
+import org.jumao.bi.component.BaseDaoCallback;
+import org.jumao.bi.component.BaseDataExtract;
+import org.jumao.bi.entites.ParamBean;
+import org.jumao.bi.service.trade.operate.IOperationOrderSvc;
+import org.jumao.bi.utis.SpringContextUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * Created by Administrator on 2017/5/3.
+ */
+public class OperationOrderNSvcImpl extends BaseDataExtract implements IOperationOrderSvc {
+
+	@Autowired
+	private BaseDaoCallback baseDaoCallback;
+
+	private BaseChartBuilder baseChartBuilder;
+    
+    private void setCustomContext(String platform, String startDate, String endDate, String sql){
+    	List<String> transList = new ArrayList<String>();
+    	transList.add("platform");
+    	transList.add("startDate");
+    	transList.add("endDate");
+    	ParamBean param = new ParamBean(platform,startDate,endDate);
+    	super.setContext(param, transList, false, sql, null, null, null);
+    }
+    @Override
+    public Response getOrderType(String platform, String startDate, String endDate) throws Exception{
+    	String sql = "with need_deal_tab as (SELECT c.goods_cate_id as itemId,c.goods_cate_name as itemName,"
+    			+ "count(DISTINCT o.order_id) as itemValue,"
+    			+ "row_number() over(order by count(DISTINCT o.order_id) desc) as rownum"
+    			+ " FROM jmbi_trade_order o,jmbi_trade_order_detail d,jmbi_trade_goods g,"
+				+ "jmbi_trade_goods_category c"
+				+ " WHERE o.order_id = d.order_id AND d.goods_id = g.goods_id"
+				+ " AND g.goods_category_grade1_id = c.goods_cate_id"
+				+ " and strleft(cast(o.create_time as string),10) between ':startDate'"
+				+ " and ':endDate'"
+				+ " and o.industry_id = :platform" 
+				+ " group by c.goods_cate_id,c.goods_cate_name),"
+				+ " result_tab as (select itemId,itemName,itemValue from need_deal_tab where rownum<=5"
+				+ " union select 0,'其它',sum(itemValue) from need_deal_tab where rownum>5)"
+				+ "select * from result_tab where itemValue is not null order by itemValue desc";
+    	this.setCustomContext(platform, startDate, endDate, sql);
+    	baseChartBuilder = SpringContextUtil.getBean("pieChartBuilder");
+    	return extractDataAndBuildChart(baseDaoCallback,baseChartBuilder);
+    }
+    @Override
+	public Response getOrderPay(String platform, String startDate, String endDate) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "SELECT c.goods_cate_id as itemId,c.goods_cate_name as itemName,"
+				+ "count(DISTINCT o.order_id) as itemLValue,round(sum(pay_money)/10000,2) as itemRValue"
+    			+ " FROM jmbi_trade_order o,jmbi_trade_order_detail d,jmbi_trade_goods g,"
+				+ "jmbi_trade_goods_category c"
+				+ " WHERE o.order_id = d.order_id AND d.goods_id = g.goods_id"
+				+ " AND g.goods_category_grade1_id = c.goods_cate_id"
+				+ " and strleft(cast(o.create_time as string),10) between ':startDate'"
+				+ " and ':endDate'"
+				+ " and o.industry_id = :platform" 
+				+ " group by c.goods_cate_id,c.goods_cate_name";
+		this.setCustomContext(platform, startDate, endDate, sql);
+		baseChartBuilder = SpringContextUtil.getBean("doubleYLineChartBuilder");
+    	return extractDataAndBuildChart(baseDaoCallback,baseChartBuilder);
+	}
+}

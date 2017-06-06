@@ -1,0 +1,24 @@
+package org.jumao.bi.utis.constants;
+
+
+public class GoodsUrl extends BasicUrl {
+
+    private static final String CATEGORY = "category";
+
+    /**
+     * e.g. /newlyIncr/lineChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String NEWLYINCR_LINECHART = "/" + NEWLY_INCR + "/" + LINE_CHART + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /industry/pieChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String INDUSTRY_PIECHART = "/" + Key.INDUSTRY + "/" + PIE_CHART + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+    /**
+     * e.g. /industryId/4/category/pieChart/platform/1025/startDate/20160501/endDate/20170701
+     */
+    public static final String CATEGORY_PIECHART = "/" + Key.INDUSTRY + "/{" + Key.INDUSTRY_ID + "}/" + CATEGORY + "/" +
+            PIE_CHART + PLATFORM_AND_DATE_RANGE_PATH_PARAM;
+
+
+
+}

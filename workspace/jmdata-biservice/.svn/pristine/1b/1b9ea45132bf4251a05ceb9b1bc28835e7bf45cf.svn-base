@@ -1,0 +1,18 @@
+package org.jumao.bi.dao.trade;
+
+
+import org.jumao.bi.entites.trade.register.vo.GroupByVo;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+
+import java.util.List;
+
+public interface GoodsDao {
+
+    List<TimeTotalVo> getNewlyIncrBy(String platform, String startDate, String endDate, boolean accurateToHour) throws Exception;
+
+    List<GroupByVo> getIndustryPieBy(String platform, String startDate, String endDate) throws Exception;
+
+    List<GroupByVo> getCategoryPieBy(String industryId, String platform, String startDate, String endDate) throws Exception;
+
+    List<GroupByVo> getCateIdNameVosBy(String industryId);
+}

@@ -1,0 +1,75 @@
+package org.jumao.bi.dao.trade.impl;
+
+import org.apache.log4j.Logger;
+import org.jumao.bi.dao.trade.GoodsDao;
+import org.jumao.bi.entites.trade.register.vo.GroupByVo;
+import org.jumao.bi.entites.trade.register.vo.TimeTotalVo;
+import org.jumao.bi.utis.StringUtils;
+import org.jumao.bi.utis.constants.Key;
+import org.jumao.bi.utis.constants.Table;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Created by kartty on 2017/5/23.
+ */
+@Repository(GoodsDaoImpl.GOODS_DAO)
+public class GoodsDaoImpl extends GeneralBasicDao implements GoodsDao {
+
+    private Logger logger = Logger.getLogger(GoodsDaoImpl.class);
+    public static final String GOODS_DAO = "goodsDao";
+
+
+    public List<TimeTotalVo> getNewlyIncrBy(String platform, String startDate, String endDate, boolean accurateToHour) throws Exception {
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String tmGrpLen = getCrtTmGroupLength(accurateToHour);
+        String sql = StringUtils.joinStr(
+                "select ", tmGrpLen, " as ", Key.CREATE_TIME,
+                " , count(distinct goods_id) as ", Key.TOTAL, " from ", Table.TRADE_GOODS, " where",
+                " (create_time between '", startDate, "' and '", endDate, "') ",
+                " group by ", Key.CREATE_TIME, " order by ", Key.CREATE_TIME, " asc");
+
+        return getVoList(sql, TimeTotalVo.class);
+    }
+
+
+    public List<GroupByVo> getIndustryPieBy(String platform, String startDate, String endDate) throws Exception {
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select industry_id as ", Key.TYPE,
+                " , count(distinct goods_id) as ", Key.TOTAL, " from ", Table.TRADE_GOODS,
+                " where create_time between '", startDate, "' and '", endDate, "' group by industry_id");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+
+    public List<GroupByVo> getCategoryPieBy(String industryId, String platform, String startDate, String endDate) throws Exception {
+        startDate = dealStartDate(startDate);
+        endDate = dealEndDate(endDate);
+
+        String sql = StringUtils.joinStr(
+                "select goods_category_grade1_id as ", Key.TYPE,
+                " , count(distinct goods_id) as ", Key.TOTAL, " from ", Table.TRADE_GOODS,
+                " where industry_id = ", industryId,
+                " and (create_time between '", startDate, "' and '", endDate, "') group by goods_category_grade1_id");
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+    public List<GroupByVo> getCateIdNameVosBy(String industryId) {
+        String sql = StringUtils.joinStr(
+                "select goods_cate_id as ", Key.TYPE,
+                " , goods_cate_name as ", Key.TYPE_NAME, " from ", Table.TRADE_GOODS_CATEGORY,
+                " where industry_id = ", industryId);
+
+        return getVoList(sql, GroupByVo.class);
+    }
+
+
+}

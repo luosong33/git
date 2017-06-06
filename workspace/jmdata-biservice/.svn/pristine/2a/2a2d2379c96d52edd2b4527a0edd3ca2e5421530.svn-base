@@ -1,0 +1,31 @@
+package junitTests;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Table;
+
+import java.io.IOException;
+import java.util.List;
+
+public class HBaseUtil {
+
+    public static Connection connection = null;
+
+    public static Connection getConn() {
+        if (connection == null) {
+            Configuration cfg = HBaseConfiguration.create();
+            cfg.set("hbase.zookeeper.quorum", "dn1,dn2,dn3,dn4");
+            cfg.set("hbase.zookeeper.property.clientPort", "2181");
+            try {
+                connection = ConnectionFactory.createConnection(cfg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return connection;
+    }
+
+}

@@ -18,6 +18,29 @@
       <module name="dcpp-common" target="1.7" />
       <module name="dcpp-console" target="1.7" />
       <module name="dcpp-portal" target="1.5" />
+      <module name="hbase" target="1.5" />
+      <module name="hbase-annotations" target="1.7" />
+      <module name="hbase-assembly" target="1.5" />
+      <module name="hbase-checkstyle" target="1.7" />
+      <module name="hbase-client" target="1.7" />
+      <module name="hbase-common" target="1.7" />
+      <module name="hbase-examples" target="1.7" />
+      <module name="hbase-external-blockcache" target="1.7" />
+      <module name="hbase-hadoop-compat" target="1.7" />
+      <module name="hbase-hadoop2-compat" target="1.7" />
+      <module name="hbase-it" target="1.7" />
+      <module name="hbase-prefix-tree" target="1.7" />
+      <module name="hbase-procedure" target="1.7" />
+      <module name="hbase-protocol" target="1.7" />
+      <module name="hbase-resource-bundle" target="1.7" />
+      <module name="hbase-rest" target="1.7" />
+      <module name="hbase-server" target="1.7" />
+      <module name="hbase-shaded" target="1.5" />
+      <module name="hbase-shaded-client" target="1.7" />
+      <module name="hbase-shaded-server" target="1.7" />
+      <module name="hbase-shell" target="1.7" />
+      <module name="hbase-testing-util" target="1.7" />
+      <module name="hbase-thrift" target="1.7" />
       <module name="jmbi-web" target="1.7" />
       <module name="jmdata-biservice" target="1.5" />
     </bytecodeTargetLevel>

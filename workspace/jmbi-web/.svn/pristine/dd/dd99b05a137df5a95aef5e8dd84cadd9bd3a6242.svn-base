@@ -1,9 +1,0 @@
-.searchBx .input-prepend .WdateShort{width: 100px;}
-.input-prepend .deliveryAddr{width: 170px;}
-.input-prepend .companyName{width:100px; margin-right: 10px;}
-.billDelivery{width: 190px;}
-.pUnit{line-height: 30px;}
-
-
-
-

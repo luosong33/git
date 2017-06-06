@@ -1,0 +1,71 @@
+package org.jumao.bi.component;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jumao.bi.entites.charts.LinkageBarChart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BarChartBuilder extends BaseChartBuilder {
+	
+	@Autowired
+	private LinkageBarChart barChart;
+	@Override
+	public  void buildData(List<BaseInfo> baseInfos,BaseResponse response,ComponentContext context) throws Exception {
+		// TODO Auto-generated method stub
+		barChart.setSeriesName(getSeriesName(context));
+		barChart.setSeriesData(getSeriesDataformBigDecimal(baseInfos));
+		barChart.setyAxisData(getyAxisData(baseInfos));
+		barChart.setItemId(getItemId(baseInfos,context.getItemIdtype()));
+        response.setBarChart(barChart);
+	}
+	
+	public String getSeriesName(ComponentContext context) throws Exception{
+		String seriesName = context.getUntilMap().get("seriesName").toString();
+		return seriesName;
+	}
+	
+	public  List<?> getItemId(List<BaseInfo> baseInfos,Class<?> clazz) throws Exception{
+		if (clazz==String.class){
+        	List<String> itemIdList = new ArrayList<String>();
+			for (BaseInfo baseInfo : baseInfos) {
+				String itemId =  baseInfo.getItemId().toString();
+	        	itemIdList.add(itemId);
+	        }
+			return itemIdList;
+		}else{
+			List<Integer> itemIdList = new ArrayList<Integer>();
+			for (BaseInfo baseInfo : baseInfos) {
+				Integer itemId =  Integer.valueOf(baseInfo.getItemId().toString());
+	        	itemIdList.add(itemId);
+	        }
+        	return itemIdList;
+        }
+	}
+	
+	public  String[] getyAxisData(List<BaseInfo> baseInfos) throws Exception{
+		int size = baseInfos.size();
+		String[] axisData = new String[size];
+		for (int i=0;i<size;i++) {
+			BaseInfo baseInfo = baseInfos.get(i);
+            String itemName = baseInfo.getItemName();
+            axisData[i] = itemName;
+        }
+		return axisData;
+	}
+	
+	public  BigDecimal[] getSeriesDataformBigDecimal(List<BaseInfo> baseInfos) throws Exception {
+		// TODO Auto-generated method stub
+		int size = baseInfos.size();
+		BigDecimal[] seriesData = new BigDecimal[size];
+		for (int i=0;i<size;i++) {
+			BaseInfo baseInfo = baseInfos.get(i);
+            seriesData[i] = new BigDecimal(baseInfo.getItemValue().toString());
+        }
+		return seriesData;
+	}
+	
+}

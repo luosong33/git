@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>你的系统名称</title>
+    <link href="${ServiceName}/page/img/logo.jpg" rel="icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- basic styles -->
+    <link rel="stylesheet" href="${ServiceName}/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${ServiceName}/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="${ServiceName}/static/css/ace.min.css" />
+	<link rel="stylesheet" href="${ServiceName}/page/css/console.css" />
+	
+    <script src='${ServiceName}/static/js/jquery-2.0.3.min.js' ></script>
+    <!-- ace scripts -->
+    <script src="${ServiceName}/static/js/ace.min.js"></script>
+    <script src='${ServiceName}/static/js/layer/layer.js' ></script>
+	<script src="${ServiceName}/static/js/bootstrap.min.js"></script>
+    <script src="${ServiceName}/page/js/htmlBuilder.js"></script>
+	<script src="${ServiceName}/page/js/common.js"></script>
+    <!-- 分页 -->
+    <script src="${ServiceName}/page/js/jqPaginator.js"></script>
+</head>
+<script type="text/javascript">
+	//设置js中的serviceName变量
+	serviceName='${ServiceName}';
+</script>
