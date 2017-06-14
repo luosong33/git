@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.jumore:dove-cache:1.6.1-SNAPSHOT">
     <CLASSES>
-      <root url="jar://D:/work/repo/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/work/repo/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/work/repo/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="d8a70872-38bd-480b-b70e-a67f4e758263" name="Default" comment="优化" />
+    <list default="true" readonly="true" id="d8a70872-38bd-480b-b70e-a67f4e758263" name="Default" comment="优化">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jmbi/trunk/jmbi-web/jmbi-web.iml" afterPath="$PROJECT_DIR$/jmbi/trunk/jmbi-web/jmbi-web.iml" />
+    </list>
     <ignored path="$PROJECT_DIR$/dcpp/target/" />
     <ignored path="$PROJECT_DIR$/dcpp/hbase-common/target/" />
     <ignored path="$PROJECT_DIR$/dcpp/dcpp-console/target/" />
@@ -66,12 +68,41 @@
       <file leaf-file-name="OperationSvcImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/operate/OperationSvcImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+            <state relative-caret-position="22">
+              <caret line="80" column="30" lean-forward="false" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MasterStatusTmpl.class" pinned="false" current-in-tab="false">
+        <entry file="jar://D:/work/repo/org/apache/storm/storm-starter/1.0.2/storm-starter-1.0.2.jar!/org/apache/hadoop/hbase/tmpl/master/MasterStatusTmpl.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="578">
+              <caret line="62" column="42" lean-forward="false" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DealSvcImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/deal/DealSvcImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#38861#38877#0" expanded="true" />
+                <marker date="1497421551970" expanded="true" signature="28932:28948" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trade_biservice_url.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jmbi/trunk/jmbi-web/src/main/webapp/doc/trade_biservice_url.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="103" column="0" lean-forward="true" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -197,13 +228,6 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="localRepository" value="D://work/repo" />
-        <option name="mavenHome" value="D:/param_deve/apache-maven-3.2.1" />
-        <option name="userSettingsFile" value="D:\param_deve\apache-maven-3.2.1\conf\settings.xml" />
-      </MavenGeneralSettings>
-    </option>
     <option name="enabledProfiles">
       <list>
         <option value="dev" />
@@ -268,20 +292,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="hbase">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -292,6 +302,294 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="workspace" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="org">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jumao">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="bi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="org">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jumao">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="bi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="service">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="org">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jumao">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="bi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="service">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="impl">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="org">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jumao">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="bi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="service">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="impl">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="trade">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jmdata-biservice">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="org">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="jumao">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="bi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="service">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="impl">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="trade">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="operate">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -360,41 +658,35 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\ChartServiceHelper.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\ChartBasicService.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\RegisterAnalysisImpl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\goods\GoodsAnalysisImpl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\trade\register\RegisterAnalysis.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\trade\goods\GoodsAnalysis.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\GoodsDaoImpl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\GeneralBasicDao.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\RegisterDaoImpl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\RegisterDao.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\exceptions\FailedOperationException.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\exceptions\ParamErrorException.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\threads\GetOrderCountsThread.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\Verifier.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\RegCalUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\comparator\DateTotalComp.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\comparator\GroupByVoComp.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\StringUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\RespUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\RegMapUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\RegDateUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\CN.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\RegUrl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\BasicUrl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\Table.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\Key.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\GoodsUrl.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\GeneralUtils.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\charts\CommonBean.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\trade\register\vo\LineMultiSeriesVo.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\trade\register\vo\TableVo.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\trade\register\RegLineChart.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\test\java\org\jumao\bi\junittests\HBaseUtil.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\test\java\org\jumao\bi\junittests\DelHbaseUserTraces.java</PATH>
-          <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\test\java\org\jumao\bi\junittests\AddHbaseUserTraces.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\trade\deal\IDealSvc.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\operate\OperationGoodsNSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\operate\OperationOrderNSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\operate\OperationConvFunnelNSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\ChartServiceHelper.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\ChartBasicService.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\register\RegisterAnalysisImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\deal\DealSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\shop\ShopAnalysisSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\goods\GoodsAnalysisImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\baidu\BaiduSvcHelper.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\baidu\BaiduSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\component\BaseDataExtract.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\component\IDataExtract.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\GeneralBasicDao.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\ValidUtils.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\StringUtils.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\CN.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\RegUrl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\BasicUrl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\Table.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\Key.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\GeneralUtils.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\constant\ServiceConst.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\constant\MapConstants.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\provider\InvokeFaultExceptionMapper.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\baidu\OverviewResponse.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\PieCharts.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\resources\spring\applicationContext-server.xml</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -402,6 +694,32 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\register</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\register\JytRegIncrAndAuthSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\deal</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\deal\DealSvcImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\overview</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\jyt\overview\JytOverviewAnalysisImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\register</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\register\JytRegIncrAndAuthSvc.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\deal</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\deal\IDealSvc.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\overview</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\jyt\overview\JytOverviewAnalysis.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\TradeRegisterDaoImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\TradeRegisterDao.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt\JytOverviewDao.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt\impl</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt\impl\JytOverviewDaoImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt\impl\JytRegIncrAndAuthDaoImpl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\jyt\JytRegIncrAndAuthDao.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\exceptions\WrapEx.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\enums\JytEnum.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\utis\constants\JytUrl.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\entites\baidu\MetricDescBean.java</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -409,6 +727,8 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="true" />
           <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\RegisterDao.java</PATH>
+          <PATH vcs="svn" revision="50857">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\dao\trade\impl\RegisterDaoImpl.java</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Restored" />
@@ -459,7 +779,6 @@
         <option name="mySupportsDeletion" value="false" />
         <option name="myCanBeAbsent" value="false" />
         <option name="myId" value="MERGED" />
-        <PATH vcs="svn" revision="49621">E:\jumao\git\workspace\jmdata-biservice\src\main\java\org\jumao\bi\service\impl\trade\deal\DealSvcImpl.java</PATH>
       </FILE-GROUP>
       <FILE-GROUP>
         <option name="myUpdateName" value="Not in repository" />
@@ -1091,7 +1410,9 @@
       <workItem from="1495503971422" duration="41021000" />
       <workItem from="1495704476716" duration="25200000" />
       <workItem from="1496194627022" duration="8773000" />
-      <workItem from="1496639753028" duration="27691000" />
+      <workItem from="1496639753028" duration="31675000" />
+      <workItem from="1497407900782" duration="1088000" />
+      <workItem from="1497420383293" duration="1664000" />
     </task>
     <task id="LOCAL-00020" summary="2017-05-02-0925">
       <created>1493716968601</created>
@@ -1445,7 +1766,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="469613000" />
+    <option name="totallyTimeSpent" value="476349000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1458,28 +1779,27 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26398212" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15995526" sideWeight="0.2292176" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.49511003" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25503355" sideWeight="0.57212716" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24161074" sideWeight="0.49572128" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20232274" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3411633" sideWeight="0.46699268" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24049217" sideWeight="0.5378973" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24161074" sideWeight="0.4908313" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18276283" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24049217" sideWeight="0.46210268" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22818792" sideWeight="0.45904645" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.49755502" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26845637" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.49755502" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2958435" sideWeight="0.487988" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21515892" sideWeight="0.487988" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25733498" sideWeight="0.506006" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20415647" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25733498" sideWeight="0.493994" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29278728" sideWeight="0.512012" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25503355" sideWeight="0.42787287" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25503355" sideWeight="0.52689487" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2673378" sideWeight="0.49022004" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1487,7 +1807,9 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17114915" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15995526" sideWeight="0.22677262" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1555,7 +1877,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="33" column="33" lean-forward="false" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1563,7 +1884,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="18" column="18" lean-forward="false" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1571,13 +1891,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding>
-            <marker date="1496652559567" expanded="false" signature="11012:11029" ph="&lt;~&gt;" />
-            <marker date="1496652559567" expanded="false" signature="11330:11346" ph="&lt;~&gt;" />
-            <marker date="1496652559567" expanded="false" signature="11941:11962" ph="&lt;~&gt;" />
-            <marker date="1496652559567" expanded="false" signature="12628:12642" ph="&lt;~&gt;" />
-            <marker date="1496652559567" expanded="false" signature="12708:12731" ph="&lt;~&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1585,7 +1898,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="21" column="20" lean-forward="false" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1593,10 +1905,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="19" column="56" lean-forward="false" selection-start-line="19" selection-start-column="56" selection-end-line="19" selection-end-column="56" />
-          <folding>
-            <element signature="e#2427#2428#0" expanded="false" />
-            <element signature="e#2467#2468#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1604,15 +1912,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="15" column="37" lean-forward="false" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jmbi/trunk/jmbi-web/src/main/webapp/doc/trade_biservice_url.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="109" column="10" lean-forward="false" selection-start-line="109" selection-start-column="10" selection-end-line="109" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1620,40 +1919,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="71">
           <caret line="22" column="42" lean-forward="false" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
-          <folding>
-            <marker date="1496642005806" expanded="true" signature="859:917" ph="select count... jmbi_uc_jumore_user" />
-            <marker date="1496642005806" expanded="true" signature="859:919" ph="select count... jmbi_uc_jumore_user" />
-            <marker date="1496642005806" expanded="true" signature="859:1115" ph="select count... " />
-            <marker date="1496642005806" expanded="true" signature="859:1209" ph="select count... " />
-            <marker date="1496642005806" expanded="true" signature="859:1808" ph="select count... " />
-            <marker date="1496642005806" expanded="true" signature="859:2026" ph="select count... " />
-            <marker date="1496642005806" expanded="true" signature="1023:1113" ph="SELECT COUNT... jmbi_trade_shop_operate" />
-            <marker date="1496642005806" expanded="true" signature="1023:1115" ph="SELECT COUNT... jmbi_trade_shop_operate" />
-            <marker date="1496642005806" expanded="true" signature="1235:1317" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="1235:1318" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="1235:1330" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="1235:1397" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="1428:1561" ph="select count... jmbi_trade_order" />
-            <marker date="1496642005806" expanded="true" signature="1428:1562" ph="select count... jmbi_trade_order" />
-            <marker date="1496642005806" expanded="true" signature="1624:1770" ph="select count... jmbi_trade_payment" />
-            <marker date="1496642005806" expanded="true" signature="1785:1805" ph="select count... jmbi_trade_payment" />
-            <marker date="1496642005806" expanded="true" signature="1868:2012" ph="select sum(c... jmbi_trade_payment" />
-            <marker date="1496642005806" expanded="true" signature="1868:2026" ph="select sum(p... jmbi_ep_trade" />
-            <marker date="1496642005806" expanded="true" signature="2064:2122" ph="select count... jmbi_uc_jumore_user" />
-            <marker date="1496642005806" expanded="true" signature="2064:2123" ph="select count... jmbi_uc_jumore_user" />
-            <marker date="1496642005806" expanded="true" signature="2064:2941" ph="select count... " />
-            <marker date="1496642005806" expanded="true" signature="2216:2306" ph="SELECT COUNT... jmbi_trade_shop_operate" />
-            <marker date="1496642005806" expanded="true" signature="2216:2308" ph="SELECT COUNT... jmbi_trade_shop_operate" />
-            <marker date="1496642005806" expanded="true" signature="2362:2425" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="2362:2426" ph="select count... jmbi_trade_goods" />
-            <marker date="1496642005806" expanded="true" signature="2480:2581" ph="select count... jmbi_trade_order" />
-            <marker date="1496642005806" expanded="true" signature="2480:2582" ph="select count... jmbi_trade_order" />
-            <marker date="1496642005806" expanded="true" signature="2636:2723" ph="select count... jmbi_ep_trade" />
-            <marker date="1496642005806" expanded="true" signature="2636:2761" ph="select count... jmbi_trade_payment" />
-            <marker date="1496642005806" expanded="true" signature="2636:2762" ph="select count... jmbi_ep_trade" />
-            <marker date="1496642005806" expanded="true" signature="2816:2939" ph="select sum(p... jmbi_ep_trade" />
-            <marker date="1496642005806" expanded="true" signature="2816:2941" ph="select sum(p... jmbi_ep_trade" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1661,7 +1926,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
           <caret line="708" column="29" lean-forward="false" selection-start-line="708" selection-start-column="29" selection-end-line="708" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1669,47 +1933,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="2321" column="28" lean-forward="false" selection-start-line="2321" selection-start-column="28" selection-end-line="2321" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/deal/DealSvcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1496652572560" expanded="true" signature="20050:21090" ph="{...}" />
-            <marker date="1496652572560" expanded="false" signature="20268:20280" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="false" signature="20331:20339" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="true" signature="21192:22739" ph="{...}" />
-            <marker date="1496652572560" expanded="false" signature="22342:22354" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="false" signature="22405:22413" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="true" signature="22845:25233" ph="{...}" />
-            <marker date="1496652572560" expanded="false" signature="23786:23794" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="false" signature="23858:23870" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="false" signature="23921:23929" ph="&lt;~&gt;" />
-            <marker date="1496652572560" expanded="false" signature="25097:25113" ph="&lt;~&gt;" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/IdentityTableReducer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="44" lean-forward="true" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/IdentityTableReducer.java" />
     <entry file="jar://D:/work/repo/org/apache/hbase/hbase-common/1.2.0/hbase-common-1.2.0-sources.jar!/org/apache/hadoop/hbase/Cell.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="69" column="17" lean-forward="false" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#7258#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1717,135 +1948,28 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
           <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/IdentityTableMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/KeyValueSerialization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-689">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/ReadFileUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableInputFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3101">
-          <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/MultiTableSnapshotInputFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/MutationSerialization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1041">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/PutCombiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-689">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/ResultSerialization.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2075">
-          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableMapReduceUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4201">
-          <caret line="310" column="3" lean-forward="false" selection-start-line="310" selection-start-column="3" selection-end-line="310" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableInputFormatBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="318" column="35" lean-forward="true" selection-start-line="318" selection-start-column="35" selection-end-line="318" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableSplit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableRecordReaderImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableRecordReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/Export.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/IdentityTableMapper.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/KeyValueSerialization.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/ReadFileUtil.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableInputFormat.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/MultiTableSnapshotInputFormat.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/MutationSerialization.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/PutCombiner.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/ResultSerialization.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableMapReduceUtil.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableInputFormatBase.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableSplit.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableRecordReaderImpl.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableRecordReader.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/Export.java" />
+    <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/TableMapper.java" />
     <entry file="file://$PROJECT_DIR$/dcpp/dcpp-console/src/main/java/cn/newtouch/dcpp/console/hbase/HbaseUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1853,26 +1977,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormatBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="455" column="24" lean-forward="false" selection-start-line="455" selection-start-column="24" selection-end-line="455" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormatBase.java" />
     <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/operate/OperationSvcHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="477">
           <caret line="30" column="34" lean-forward="false" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1115#1131#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1880,146 +1992,67 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
           <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-client/src/main/java/org/apache/hadoop/hbase/ServerName.java">
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-client/src/main/java/org/apache/hadoop/hbase/ServerName.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-annotations/src/main/java/org/apache/hadoop/hbase/classification/InterfaceAudience.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormat.java" />
+    <entry file="jar://D:/param_deve/jdk1.8.0_25/src.zip!/java/lang/Long.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="56" column="13" lean-forward="false" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
+        <state relative-caret-position="241">
+          <caret line="64" column="37" lean-forward="false" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Import.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Driver.java" />
+    <entry file="jar://D:/work/repo/org/mortbay/jetty/servlet-api-2.5/6.1.14/servlet-api-2.5-6.1.14.jar!/javax/servlet/http/HttpServlet.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="35" column="19" lean-forward="false" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/master/MasterStatusServlet.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/regionserver/RSStatusServlet.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/regionserver/TestRSStatusServlet.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/master/TestMasterFailover.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/master/TestMasterStatusServlet.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/ImportTsv.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Export.java" />
+    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/pom.xml" />
+    <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/deal/DealSvcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
+          <folding>
+            <marker date="1497421551970" expanded="true" signature="28932:28948" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jmbi/trunk/jmbi-web/src/main/webapp/doc/trade_biservice_url.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="103" column="0" lean-forward="true" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://D:/work/repo/org/apache/storm/storm-starter/1.0.2/storm-starter-1.0.2.jar!/org/apache/hadoop/hbase/tmpl/master/MasterStatusTmpl.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="57" column="2" lean-forward="false" selection-start-line="57" selection-start-column="2" selection-end-line="57" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-annotations/src/main/java/org/apache/hadoop/hbase/classification/InterfaceAudience.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="66" column="29" lean-forward="false" selection-start-line="66" selection-start-column="29" selection-end-line="66" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/param_deve/jdk1.8.0_25/src.zip!/java/lang/Long.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="64" column="37" lean-forward="false" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Import.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="74" column="22" lean-forward="false" selection-start-line="74" selection-start-column="22" selection-end-line="74" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Driver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="45" column="25" lean-forward="false" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/work/repo/org/mortbay/jetty/servlet-api-2.5/6.1.14/servlet-api-2.5-6.1.14.jar!/javax/servlet/http/HttpServlet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="35" column="19" lean-forward="false" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/master/MasterStatusServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="958">
-          <caret line="99" column="0" lean-forward="true" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/regionserver/RSStatusServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/regionserver/TestRSStatusServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="826">
-          <caret line="128" column="3" lean-forward="true" selection-start-line="128" selection-start-column="3" selection-end-line="128" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/master/TestMasterFailover.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="81" column="13" lean-forward="false" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/test/java/org/apache/hadoop/hbase/master/TestMasterStatusServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="42" column="24" lean-forward="true" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/ImportTsv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="80" column="22" lean-forward="false" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/Export.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="47" column="16" lean-forward="false" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hbase-1.2.0/hbase-server/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="62" column="28" lean-forward="false" selection-start-line="62" selection-start-column="28" selection-end-line="62" selection-end-column="28" />
+        <state relative-caret-position="578">
+          <caret line="62" column="42" lean-forward="false" selection-start-line="62" selection-start-column="42" selection-end-line="62" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jmdata-biservice/src/main/java/org/jumao/bi/service/impl/trade/operate/OperationSvcImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#38861#38877#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="22">
+          <caret line="80" column="30" lean-forward="false" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>

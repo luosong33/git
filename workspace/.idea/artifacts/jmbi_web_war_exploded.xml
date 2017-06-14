@@ -7,24 +7,24 @@
           <element id="module-output" name="jmbi-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-all/1.6.1-SNAPSHOT/dove-all-1.6.1-20170331.073202-11.jar" output-file-name="dove-all-1.6.1-SNAPSHOT.jar" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-core/1.6.1-SNAPSHOT/dove-core-1.6.1-20170512.120623-22.jar" output-file-name="dove-core-1.6.1-SNAPSHOT.jar" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15.jar" output-file-name="dove-cache-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-all/1.6.1-SNAPSHOT/dove-all-1.6.1-20170331.073202-11.jar" output-file-name="dove-all-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-core/1.6.1-SNAPSHOT/dove-core-1.6.1-20170608.020523-26.jar" output-file-name="dove-core-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-cache/1.6.1-SNAPSHOT/dove-cache-1.6.1-20170510.050140-15.jar" output-file-name="dove-cache-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: redis.clients:jedis:2.8.1" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.4.2" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-web/1.6.1-SNAPSHOT/dove-web-1.6.1-20170512.022715-55.jar" output-file-name="dove-web-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-web/1.6.1-SNAPSHOT/dove-web-1.6.1-20170512.022715-55.jar" output-file-name="dove-web-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-core:1.2.4" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-spring:1.2.4" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.2.4" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-cas:1.2.4" />
           <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.4.1" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-mq/1.6.1-SNAPSHOT/dove-mq-1.6.1-20170419.023655-11.jar" output-file-name="dove-mq-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-mq/1.6.1-SNAPSHOT/dove-mq-1.6.1-20170419.023655-11.jar" output-file-name="dove-mq-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: com.rabbitmq:amqp-client:3.6.3" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-soa/1.6.1-SNAPSHOT/dove-soa-1.6.1-20170407.052910-9.jar" output-file-name="dove-soa-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-soa/1.6.1-SNAPSHOT/dove-soa-1.6.1-20170407.052910-9.jar" output-file-name="dove-soa-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: dubbo:dubbo:2.8.4" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-sms/1.6.1-SNAPSHOT/dove-sms-1.6.1-20170605.024126-7.jar" output-file-name="dove-sms-1.6.1-SNAPSHOT.jar" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-search/1.6.1-SNAPSHOT/dove-search-1.6.1-20170405.010854-12.jar" output-file-name="dove-search-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-sms/1.6.1-SNAPSHOT/dove-sms-1.6.1-20170605.024126-7.jar" output-file-name="dove-sms-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-search/1.6.1-SNAPSHOT/dove-search-1.6.1-20170405.010854-12.jar" output-file-name="dove-search-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch:2.3.4" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:5.5.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-backward-codecs:5.5.0" />
@@ -56,7 +56,7 @@
           <element id="library" level="project" name="Maven: com.twitter:jsr166e:1.1.0" />
           <element id="library" level="project" name="Maven: org.nlpcn:elasticsearch-sql:2.3.4.1" />
           <element id="library" level="project" name="Maven: com.vividsolutions:jts:1.13" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/dove-util/1.6.1-SNAPSHOT/dove-util-1.6.1-20170519.092702-18.jar" output-file-name="dove-util-1.6.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/dove-util/1.6.1-SNAPSHOT/dove-util-1.6.1-20170612.021540-19.jar" output-file-name="dove-util-1.6.1-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.4.1" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.47" />
           <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:4.1.6" />
@@ -147,7 +147,7 @@
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.2" />
           <element id="library" level="project" name="Maven: org.apache.struts:struts-taglib:1.3.8" />
           <element id="library" level="project" name="Maven: org.apache.struts:struts-tiles:1.3.8" />
-          <element id="file-copy" path="D:/work/repo/com/jumore/ucenter/ucenter-dubbo-service-api/2.0.0-SNAPSHOT/ucenter-dubbo-service-api-2.0.0-20170310.083452-83.jar" output-file-name="ucenter-dubbo-service-api-2.0.0-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/jumore/ucenter/ucenter-dubbo-service-api/2.0.0-SNAPSHOT/ucenter-dubbo-service-api-2.0.0-20170310.083452-83.jar" output-file-name="ucenter-dubbo-service-api-2.0.0-SNAPSHOT.jar" />
           <element id="library" level="project" name="Maven: net.sf.json-lib:json-lib:jdk15:2.4" />
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.1" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi:3.14" />

@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.teambytes.logback:logback-flume-appender_2.11:0.0.9">
     <CLASSES>
-      <root url="jar://D:/work/repo/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/work/repo/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/work/repo/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/teambytes/logback/logback-flume-appender_2.11/0.0.9/logback-flume-appender_2.11-0.0.9-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
