@@ -1,0 +1,51 @@
+<html>
+<title>Call webservice with javascript and xmlhttp.</title>
+<script type="text/javascript">
+	var xmlHttp;
+
+	/* 自定义的方法 */
+	function startRequest() {
+		createXMLHttpRequest();
+		xmlHttp.onreadystatechange = handleStateChange;
+		//要调用的页面地址
+		//xmlHttp.open("GET", "simpleResponse.xml", true);
+		//要传递的参数 跟调用页面一样如
+		//xmlHttp.send(null); 或者xmlHttp.send("user=1&&id=9"); 
+		xmlHttp.open("POST", "http://localhost:9000/Service/ReadWriteRedis", false);
+		alert(1)
+		xmlHttp.setrequestheader("content-length", xml.length);
+		alert(2)
+		xmlHttp.setrequestheader("content-type", "application/x-www-form-urlencoded");
+		xmlHttp.send("xxx=" + xml);
+		//alert("已经发送了");
+	}
+	
+	function createXMLHttpRequest() {
+		if (window.ActiveXObject) {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		} else if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		}
+	}
+
+	function handleStateChange() {
+		//alert(xmlHttp.responseText);
+		if (xmlHttp.readyState == 4) {
+			if (xmlHttp.status == 200) {
+				//执行后返回的东西自个再处理就行了
+				alert("服务器端返回:\n " + xmlHttp.responseText);
+				xmlHttp = null;
+
+			}
+		}
+	}
+</script>
+
+<body>
+	<input type="button" value="CallWebserviceByGet"
+		onClick="startRequest()" />
+	<input type="button" value="CallWebserviceByPost"
+		onClick="RequestByPost('Zach')" />
+	<input type="button" value="test" onClick="RequestByGet()" />
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation=" 
+                http://www.springframework.org/schema/beans 
+                http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+                http://www.springframework.org/schema/context 
+                http://www.springframework.org/schema/context/spring-context-3.1.xsd 
+                http://www.springframework.org/schema/mvc 
+                http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+	<!-- <mvc:annotation-driven /> -->
+	<!-- <context:annotation-config /> -->
+	<mvc:default-servlet-handler />
+	<context:component-scan base-package="cn.newtouch.application.web" />
+	<context:component-scan base-package="cn.newtouch.application.*.web" />
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件的最大尺寸为1MB -->
+		<property name="maxUploadSize">
+			<value>1048576</value>
+		</property>
+	</bean>
+
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter" />
+
+	<!-- 指定系统寻找controller路径 -->
+	<mvc:annotation-driven>
+		<!-- json 数据格式转换 -->
+		<mvc:message-converters>
+			<bean id="mappingJackson2HttpMessageConverter"
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="cn.newtouch.framework.orm.hibernate.HibernateAwareObjectMapper" />
+				</property>
+				<property name="supportedMediaTypes">
+					<list>
+						<value>*</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 搜索的包路径 -->
+	<!-- <context:component-scan base-package="com.abin.lee.ssh" use-default-filters="false"> 
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" 
+		/> </context:component-scan> -->
+
+	<mvc:view-controller path="/" view-name="redirect:/index" />
+</beans>

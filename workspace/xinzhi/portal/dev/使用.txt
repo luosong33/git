@@ -1,0 +1,5 @@
+-javaagent:C:/reload-1.0.0.jar -noverify
+
+java -jar lombok.jar
+
+eclipse.ini中加入-javaagent:lombok.jar
